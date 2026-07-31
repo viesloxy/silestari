@@ -1,0 +1,32 @@
+# Local Claude Code state
+.claude/
+
+# Internal documentation (kept local only, never pushed)
+docs/
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Env files (redundant safety; apps/web already ignores its own)
+.env
+.env.local
+.env.*.local
+
+# Temp
+*.tmp
+*.temp

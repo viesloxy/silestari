@@ -1,0 +1,227 @@
+@import "tailwindcss";
+@plugin "tailwindcss-animate";
+
+/* ============================================================
+   Plus Jakarta Display — font lokal (dari SiLestari/fonts/)
+   ============================================================ */
+@font-face {
+  font-family: "Plus Jakarta Display";
+  src: url("/fonts/plus_jakarta/PlusJakartaDisplay-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Plus Jakarta Display";
+  src: url("/fonts/plus_jakarta/PlusJakartaDisplay-Medium.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Plus Jakarta Display";
+  src: url("/fonts/plus_jakarta/PlusJakartaDisplay-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ============================================================
+   Design Tokens — Si Lestari (lihat DESIGN_SYSTEM.md)
+   ============================================================ */
+:root {
+  /* Primary — Oranye Logo */
+  --sl-primary-50: #FFF4EC;
+  --sl-primary-100: #FFE3CE;
+  --sl-primary-200: #FFC69B;
+  --sl-primary-300: #FFA967;
+  --sl-primary-400: #FF8C34;
+  --sl-primary-500: #F58220;
+  --sl-primary-600: #DB6A0F;
+  --sl-primary-700: #B4530A;
+  --sl-primary-800: #8B3F07;
+  --sl-primary-900: #5C2A05;
+
+  /* Sekunder — Batik cokelat-emas (rok maskot) */
+  --sl-batik-50: #FAF3E7;
+  --sl-batik-200: #E9D4A8;
+  --sl-batik-500: #B08039;
+  --sl-batik-700: #7A5623;
+
+  /* Aksen — Hijau daun (aksen rambut maskot) */
+  --sl-daun-50: #EDF7EE;
+  --sl-daun-500: #4A9E5A;
+  --sl-daun-700: #2F6B3B;
+
+  /* Aksen — Biru vest maskot */
+  --sl-biru-50: #EEF3F8;
+  --sl-biru-500: #3A6EA5;
+  --sl-biru-700: #274A70;
+
+  /* Netral (Ink) — off-white hangat, bukan pure white */
+  --sl-ink-0: #FFFFFF;
+  --sl-ink-50: #FAF7F2;
+  --sl-ink-100: #EFEAE1;
+  --sl-ink-300: #C7BFB1;
+  --sl-ink-500: #7A7267;
+  --sl-ink-700: #3E3831;
+  --sl-ink-900: #1B1712;
+
+  /* Semantik */
+  --sl-danger-500: #D14343;
+  --sl-warning-500: #E8A93C;
+
+  /* Radius */
+  --radius: 0.625rem; /* 10px — sl-md */
+
+  /* ---- Semantic tokens shadcn/ui (Tailwind v4) ---- */
+  --background: var(--sl-ink-50);
+  --foreground: var(--sl-ink-900);
+
+  --card: var(--sl-ink-0);
+  --card-foreground: var(--sl-ink-900);
+
+  --popover: var(--sl-ink-0);
+  --popover-foreground: var(--sl-ink-900);
+
+  --primary: var(--sl-primary-500);
+  --primary-foreground: #FFFFFF;
+
+  --secondary: var(--sl-batik-50);
+  --secondary-foreground: var(--sl-batik-700);
+
+  --muted: var(--sl-ink-100);
+  --muted-foreground: var(--sl-ink-500);
+
+  --accent: var(--sl-primary-50);
+  --accent-foreground: var(--sl-primary-700);
+
+  --destructive: var(--sl-danger-500);
+  --destructive-foreground: #FFFFFF;
+
+  --border: var(--sl-ink-100);
+  --input: var(--sl-ink-100);
+  --ring: var(--sl-primary-400);
+
+  --chart-1: var(--sl-primary-500);
+  --chart-2: var(--sl-batik-500);
+  --chart-3: var(--sl-daun-500);
+  --chart-4: var(--sl-biru-500);
+  --chart-5: var(--sl-warning-500);
+
+  --sidebar: var(--sl-ink-0);
+  --sidebar-foreground: var(--sl-ink-700);
+  --sidebar-primary: var(--sl-primary-500);
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: var(--sl-primary-50);
+  --sidebar-accent-foreground: var(--sl-primary-700);
+  --sidebar-border: var(--sl-ink-100);
+  --sidebar-ring: var(--sl-primary-400);
+}
+
+/* ============================================================
+   Tailwind v4 @theme — expose tokens as utilities
+   ============================================================ */
+@theme inline {
+  --font-sans: "Plus Jakarta Display", system-ui, -apple-system, "Segoe UI",
+    Roboto, sans-serif;
+  --font-display: "Plus Jakarta Display", system-ui, sans-serif;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Brand namespaced (utility: bg-sl-primary-500, text-sl-ink-700 dst.) */
+  --color-sl-primary-50: var(--sl-primary-50);
+  --color-sl-primary-100: var(--sl-primary-100);
+  --color-sl-primary-200: var(--sl-primary-200);
+  --color-sl-primary-300: var(--sl-primary-300);
+  --color-sl-primary-400: var(--sl-primary-400);
+  --color-sl-primary-500: var(--sl-primary-500);
+  --color-sl-primary-600: var(--sl-primary-600);
+  --color-sl-primary-700: var(--sl-primary-700);
+  --color-sl-primary-800: var(--sl-primary-800);
+  --color-sl-primary-900: var(--sl-primary-900);
+  --color-sl-batik-50: var(--sl-batik-50);
+  --color-sl-batik-200: var(--sl-batik-200);
+  --color-sl-batik-500: var(--sl-batik-500);
+  --color-sl-batik-700: var(--sl-batik-700);
+  --color-sl-daun-50: var(--sl-daun-50);
+  --color-sl-daun-500: var(--sl-daun-500);
+  --color-sl-daun-700: var(--sl-daun-700);
+  --color-sl-biru-50: var(--sl-biru-50);
+  --color-sl-biru-500: var(--sl-biru-500);
+  --color-sl-biru-700: var(--sl-biru-700);
+  --color-sl-ink-0: var(--sl-ink-0);
+  --color-sl-ink-50: var(--sl-ink-50);
+  --color-sl-ink-100: var(--sl-ink-100);
+  --color-sl-ink-300: var(--sl-ink-300);
+  --color-sl-ink-500: var(--sl-ink-500);
+  --color-sl-ink-700: var(--sl-ink-700);
+  --color-sl-ink-900: var(--sl-ink-900);
+
+  /* Radius scale */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+
+  /* Shadow scale */
+  --shadow-sl-soft: 0 1px 2px rgba(27, 23, 18, 0.04),
+    0 2px 8px rgba(27, 23, 18, 0.06);
+  --shadow-sl-lift: 0 4px 12px rgba(27, 23, 18, 0.08),
+    0 12px 24px rgba(27, 23, 18, 0.06);
+  --shadow-sl-glow: 0 0 0 4px rgba(245, 130, 32, 0.18);
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+  html {
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-feature-settings: "ss01", "cv01";
+  }
+  ::selection {
+    background: var(--sl-primary-100);
+    color: var(--sl-primary-900);
+  }
+}
