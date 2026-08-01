@@ -1,21 +1,27 @@
 import type { Metadata } from "next";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
+  variable: "--font-jakarta",
+});
+
 export const metadata: Metadata = {
-  title: "Si Lestari — Kamus Hidup Bahasa Daerah",
+  title: "Si Lestari, Kamus Kolaboratif Bahasa Daerah",
   description:
-    "Platform kolaboratif pelestarian kosakata bahasa daerah Indonesia berbasis AI.",
+    "Simpan kosakata bahasa daerah Indonesia bersama komunitas. Diperiksa AI, dikukuhkan penutur asli.",
   icons: { icon: "/brand/logo.png" },
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="id" className="h-full antialiased">
-      <body className="min-h-full flex flex-col bg-background text-foreground">
+    <html lang="id" className={`${jakarta.variable} h-full antialiased`}>
+      <body className="min-h-full bg-background text-foreground">
         {children}
       </body>
     </html>

@@ -1,9 +1,9 @@
 @import "tailwindcss";
 @plugin "tailwindcss-animate";
 
-/* ============================================================
-   Plus Jakarta Display — font lokal (dari SiLestari/fonts/)
-   ============================================================ */
+/* Plus Jakarta Sans di-inject oleh next/font/google via CSS variable
+   --font-jakarta (di layout.tsx). File OTF lokal disimpan sebagai
+   fallback opsional saja. */
 @font-face {
   font-family: "Plus Jakarta Display";
   src: url("/fonts/plus_jakarta/PlusJakartaDisplay-Regular.otf") format("opentype");
@@ -27,104 +27,156 @@
 }
 
 /* ============================================================
-   Design Tokens — Si Lestari (lihat DESIGN_SYSTEM.md)
+   Custom Animations (adopsi dari MetricFlow, pure CSS)
    ============================================================ */
-:root {
-  /* Primary — Oranye Logo */
-  --sl-primary-50: #FFF4EC;
-  --sl-primary-100: #FFE3CE;
-  --sl-primary-200: #FFC69B;
-  --sl-primary-300: #FFA967;
-  --sl-primary-400: #FF8C34;
-  --sl-primary-500: #F58220;
-  --sl-primary-600: #DB6A0F;
-  --sl-primary-700: #B4530A;
-  --sl-primary-800: #8B3F07;
-  --sl-primary-900: #5C2A05;
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%      { transform: translateY(-20px); }
+}
+@keyframes float-delayed {
+  0%, 100% { transform: translateY(0px); }
+  50%      { transform: translateY(-15px); }
+}
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-in-left {
+  from { opacity: 0; transform: translateX(-30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes fade-in-right {
+  from { opacity: 0; transform: translateX(30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes pulse-slow {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.7; }
+}
 
-  /* Sekunder — Batik cokelat-emas (rok maskot) */
-  --sl-batik-50: #FAF3E7;
-  --sl-batik-200: #E9D4A8;
-  --sl-batik-500: #B08039;
-  --sl-batik-700: #7A5623;
-
-  /* Aksen — Hijau daun (aksen rambut maskot) */
-  --sl-daun-50: #EDF7EE;
-  --sl-daun-500: #4A9E5A;
-  --sl-daun-700: #2F6B3B;
-
-  /* Aksen — Biru vest maskot */
-  --sl-biru-50: #EEF3F8;
-  --sl-biru-500: #3A6EA5;
-  --sl-biru-700: #274A70;
-
-  /* Netral (Ink) — off-white hangat, bukan pure white */
-  --sl-ink-0: #FFFFFF;
-  --sl-ink-50: #FAF7F2;
-  --sl-ink-100: #EFEAE1;
-  --sl-ink-300: #C7BFB1;
-  --sl-ink-500: #7A7267;
-  --sl-ink-700: #3E3831;
-  --sl-ink-900: #1B1712;
-
-  /* Semantik */
-  --sl-danger-500: #D14343;
-  --sl-warning-500: #E8A93C;
-
-  /* Radius */
-  --radius: 0.625rem; /* 10px — sl-md */
-
-  /* ---- Semantic tokens shadcn/ui (Tailwind v4) ---- */
-  --background: var(--sl-ink-50);
-  --foreground: var(--sl-ink-900);
-
-  --card: var(--sl-ink-0);
-  --card-foreground: var(--sl-ink-900);
-
-  --popover: var(--sl-ink-0);
-  --popover-foreground: var(--sl-ink-900);
-
-  --primary: var(--sl-primary-500);
-  --primary-foreground: #FFFFFF;
-
-  --secondary: var(--sl-batik-50);
-  --secondary-foreground: var(--sl-batik-700);
-
-  --muted: var(--sl-ink-100);
-  --muted-foreground: var(--sl-ink-500);
-
-  --accent: var(--sl-primary-50);
-  --accent-foreground: var(--sl-primary-700);
-
-  --destructive: var(--sl-danger-500);
-  --destructive-foreground: #FFFFFF;
-
-  --border: var(--sl-ink-100);
-  --input: var(--sl-ink-100);
-  --ring: var(--sl-primary-400);
-
-  --chart-1: var(--sl-primary-500);
-  --chart-2: var(--sl-batik-500);
-  --chart-3: var(--sl-daun-500);
-  --chart-4: var(--sl-biru-500);
-  --chart-5: var(--sl-warning-500);
-
-  --sidebar: var(--sl-ink-0);
-  --sidebar-foreground: var(--sl-ink-700);
-  --sidebar-primary: var(--sl-primary-500);
-  --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: var(--sl-primary-50);
-  --sidebar-accent-foreground: var(--sl-primary-700);
-  --sidebar-border: var(--sl-ink-100);
-  --sidebar-ring: var(--sl-primary-400);
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+.animate-float-delayed {
+  animation: float-delayed 8s ease-in-out infinite;
+  animation-delay: 2s;
+}
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s ease-out forwards;
+}
+.animate-fade-in-up-delayed {
+  animation: fade-in-up 0.8s ease-out forwards;
+  animation-delay: 0.3s;
+  opacity: 0;
+}
+.animate-fade-in-left {
+  animation: fade-in-left 0.6s ease-out forwards;
+}
+.animate-fade-in-right {
+  animation: fade-in-right 0.6s ease-out forwards;
+}
+.animate-pulse-slow {
+  animation: pulse-slow 3s ease-in-out infinite;
 }
 
 /* ============================================================
-   Tailwind v4 @theme — expose tokens as utilities
+   Design Tokens Si Lestari
    ============================================================ */
+:root {
+  /* Cream, canvas hangat */
+  --sl-cream-50: #FFFDF7;
+  --sl-cream-100: #FFFBEB;
+  --sl-cream-200: #F7EFDA;
+
+  /* Ink, teks */
+  --sl-ink-900: #0F172A;
+  --sl-ink-700: #334155;
+  --sl-ink-500: #64748B;
+  --sl-ink-300: #94A3B8;
+  --sl-ink-200: #CBD5E1;
+  --sl-ink-100: #EEEDED;
+  --sl-ink-50: #F6F6F6;
+
+  /* Stone, warm neutral */
+  --sl-stone-500: #78716C;
+  --sl-stone-700: #57534E;
+
+  /* Kilau (orange dari logo) */
+  --sl-kilau-50: #FFF4EC;
+  --sl-kilau-100: #FFE8D2;
+  --sl-kilau-200: #FFD0AB;
+  --sl-kilau-400: #FF9B4A;
+  --sl-kilau-500: #F58220;
+  --sl-kilau-600: #DB6A0F;
+  --sl-kilau-700: #B4530A;
+
+  /* Batik (warm gold) */
+  --sl-batik-50: #FAF3E7;
+  --sl-batik-100: #F0E1BE;
+  --sl-batik-200: #E9D4A8;
+  --sl-batik-300: #D4B27C;
+  --sl-batik-500: #B08039;
+  --sl-batik-700: #7A5623;
+
+  /* Daun (green success) */
+  --sl-daun-50: #EDF7EE;
+  --sl-daun-100: #D1EAD5;
+  --sl-daun-200: #A9D6B0;
+  --sl-daun-300: #8BC498;
+  --sl-daun-500: #4A9E5A;
+  --sl-daun-700: #2F6B3B;
+
+  /* Langit (soft blue accent - untuk variasi ke-3 kolom) */
+  --sl-langit-50: #EFF6FF;
+  --sl-langit-100: #DBEAFE;
+  --sl-langit-200: #BFDBFE;
+  --sl-langit-500: #3B82F6;
+  --sl-langit-600: #2563EB;
+  --sl-langit-700: #1D4ED8;
+
+  /* Semantik */
+  --sl-alarm-500: #E5484D;
+
+  /* Radius */
+  --radius: 0.625rem;
+
+  /* Shadcn semantic tokens (light editorial) */
+  --background: var(--sl-cream-100);
+  --foreground: var(--sl-ink-900);
+  --card: #FFFFFF;
+  --card-foreground: var(--sl-ink-900);
+  --popover: #FFFFFF;
+  --popover-foreground: var(--sl-ink-900);
+  --primary: var(--sl-kilau-500);
+  --primary-foreground: #FFFFFF;
+  --secondary: var(--sl-ink-50);
+  --secondary-foreground: var(--sl-ink-900);
+  --muted: var(--sl-ink-50);
+  --muted-foreground: var(--sl-ink-500);
+  --accent: var(--sl-kilau-100);
+  --accent-foreground: var(--sl-kilau-700);
+  --destructive: var(--sl-alarm-500);
+  --destructive-foreground: #FFFFFF;
+  --border: var(--sl-ink-100);
+  --input: var(--sl-ink-100);
+  --ring: var(--sl-kilau-500);
+  --chart-1: var(--sl-kilau-500);
+  --chart-2: var(--sl-batik-500);
+  --chart-3: var(--sl-daun-500);
+  --chart-4: var(--sl-langit-500);
+  --chart-5: var(--sl-stone-500);
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: var(--sl-ink-700);
+  --sidebar-primary: var(--sl-kilau-500);
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: var(--sl-kilau-50);
+  --sidebar-accent-foreground: var(--sl-kilau-700);
+  --sidebar-border: var(--sl-ink-100);
+  --sidebar-ring: var(--sl-kilau-500);
+}
+
 @theme inline {
-  --font-sans: "Plus Jakarta Display", system-ui, -apple-system, "Segoe UI",
-    Roboto, sans-serif;
+  --font-sans: "Plus Jakarta Display", system-ui, sans-serif;
   --font-display: "Plus Jakarta Display", system-ui, sans-serif;
 
   --color-background: var(--background);
@@ -160,68 +212,160 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  /* Brand namespaced (utility: bg-sl-primary-500, text-sl-ink-700 dst.) */
-  --color-sl-primary-50: var(--sl-primary-50);
-  --color-sl-primary-100: var(--sl-primary-100);
-  --color-sl-primary-200: var(--sl-primary-200);
-  --color-sl-primary-300: var(--sl-primary-300);
-  --color-sl-primary-400: var(--sl-primary-400);
-  --color-sl-primary-500: var(--sl-primary-500);
-  --color-sl-primary-600: var(--sl-primary-600);
-  --color-sl-primary-700: var(--sl-primary-700);
-  --color-sl-primary-800: var(--sl-primary-800);
-  --color-sl-primary-900: var(--sl-primary-900);
+  /* Brand tokens */
+  --color-sl-cream-50: var(--sl-cream-50);
+  --color-sl-cream-100: var(--sl-cream-100);
+  --color-sl-cream-200: var(--sl-cream-200);
+  --color-sl-ink-900: var(--sl-ink-900);
+  --color-sl-ink-700: var(--sl-ink-700);
+  --color-sl-ink-500: var(--sl-ink-500);
+  --color-sl-ink-300: var(--sl-ink-300);
+  --color-sl-ink-200: var(--sl-ink-200);
+  --color-sl-ink-100: var(--sl-ink-100);
+  --color-sl-ink-50: var(--sl-ink-50);
+  --color-sl-stone-500: var(--sl-stone-500);
+  --color-sl-stone-700: var(--sl-stone-700);
+  --color-sl-kilau-50: var(--sl-kilau-50);
+  --color-sl-kilau-100: var(--sl-kilau-100);
+  --color-sl-kilau-200: var(--sl-kilau-200);
+  --color-sl-kilau-400: var(--sl-kilau-400);
+  --color-sl-kilau-500: var(--sl-kilau-500);
+  --color-sl-kilau-600: var(--sl-kilau-600);
+  --color-sl-kilau-700: var(--sl-kilau-700);
   --color-sl-batik-50: var(--sl-batik-50);
+  --color-sl-batik-100: var(--sl-batik-100);
   --color-sl-batik-200: var(--sl-batik-200);
+  --color-sl-batik-300: var(--sl-batik-300);
   --color-sl-batik-500: var(--sl-batik-500);
   --color-sl-batik-700: var(--sl-batik-700);
   --color-sl-daun-50: var(--sl-daun-50);
+  --color-sl-daun-100: var(--sl-daun-100);
+  --color-sl-daun-200: var(--sl-daun-200);
+  --color-sl-daun-300: var(--sl-daun-300);
   --color-sl-daun-500: var(--sl-daun-500);
   --color-sl-daun-700: var(--sl-daun-700);
-  --color-sl-biru-50: var(--sl-biru-50);
-  --color-sl-biru-500: var(--sl-biru-500);
-  --color-sl-biru-700: var(--sl-biru-700);
-  --color-sl-ink-0: var(--sl-ink-0);
-  --color-sl-ink-50: var(--sl-ink-50);
-  --color-sl-ink-100: var(--sl-ink-100);
-  --color-sl-ink-300: var(--sl-ink-300);
-  --color-sl-ink-500: var(--sl-ink-500);
-  --color-sl-ink-700: var(--sl-ink-700);
-  --color-sl-ink-900: var(--sl-ink-900);
+  --color-sl-langit-50: var(--sl-langit-50);
+  --color-sl-langit-100: var(--sl-langit-100);
+  --color-sl-langit-200: var(--sl-langit-200);
+  --color-sl-langit-500: var(--sl-langit-500);
+  --color-sl-langit-600: var(--sl-langit-600);
+  --color-sl-langit-700: var(--sl-langit-700);
 
-  /* Radius scale */
   --radius-sm: 6px;
   --radius-md: 10px;
-  --radius-lg: 16px;
-  --radius-xl: 24px;
-
-  /* Shadow scale */
-  --shadow-sl-soft: 0 1px 2px rgba(27, 23, 18, 0.04),
-    0 2px 8px rgba(27, 23, 18, 0.06);
-  --shadow-sl-lift: 0 4px 12px rgba(27, 23, 18, 0.08),
-    0 12px 24px rgba(27, 23, 18, 0.06);
-  --shadow-sl-glow: 0 0 0 4px rgba(245, 130, 32, 0.18);
+  --radius-lg: 12px;
+  --radius-xl: 16px;
 }
 
-/* ============================================================
-   Base
-   ============================================================ */
 @layer base {
   * {
     border-color: var(--border);
+    /* Universal font lock via CSS variable dari next/font. Fallback ke local OTF, lalu system. */
+    font-family: var(--font-jakarta), "Plus Jakarta Display", system-ui,
+      -apple-system, "Segoe UI", Roboto, sans-serif !important;
   }
-  html {
-    font-family: var(--font-sans);
+  html, body {
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
   body {
     background: var(--background);
     color: var(--foreground);
-    font-feature-settings: "ss01", "cv01";
+    font-feature-settings: "ss01", "cv02";
+    overflow-x: hidden;
+    position: relative;
+  }
+  /* Subtle depth gradient global, tidak ada orb bulat */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 0%, rgba(245, 130, 32, 0.05), transparent 60%),
+      radial-gradient(ellipse 60% 50% at 100% 40%, rgba(176, 128, 57, 0.04), transparent 65%);
   }
   ::selection {
-    background: var(--sl-primary-100);
-    color: var(--sl-primary-900);
+    background: var(--sl-kilau-200);
+    color: var(--sl-ink-900);
+  }
+}
+
+/* ============================================================
+   Button pill utility, satu standar untuk seluruh aplikasi
+   ============================================================ */
+.btn-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  cursor: pointer;
+  transition-property: transform, background-color, border-color, color, box-shadow;
+  transition-duration: 300ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+  outline: none;
+}
+.btn-pill:focus-visible {
+  outline: 2px solid var(--sl-kilau-500);
+  outline-offset: 2px;
+}
+.btn-pill:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Ukuran: sm h-9 px-4 text-sm, default h-11 px-5 text-sm, lg h-12 px-6 text-base */
+.btn-pill-sm { height: 2.25rem; padding: 0 1rem;    font-size: 0.875rem; }
+.btn-pill-md { height: 2.75rem; padding: 0 1.5rem;  font-size: 0.9rem; }
+.btn-pill-lg { height: 3rem;    padding: 0 1.75rem; font-size: 1rem; }
+
+/* Varian */
+.btn-pill-primary {
+  background: var(--sl-kilau-500);
+  color: #FFFFFF;
+  box-shadow: 0 4px 6px rgba(245, 130, 32, 0.15);
+}
+.btn-pill-primary:hover {
+  background: var(--sl-kilau-600);
+  transform: scale(1.05);
+  box-shadow: 0 10px 15px rgba(245, 130, 32, 0.25);
+}
+
+.btn-pill-outline {
+  background: rgba(255, 255, 255, 0.6);
+  color: var(--sl-ink-900);
+  border: 1px solid var(--sl-ink-200);
+  backdrop-filter: blur(4px);
+}
+.btn-pill-outline:hover {
+  border-color: var(--sl-kilau-300);
+  background: var(--sl-kilau-50);
+  color: var(--sl-kilau-700);
+  transform: scale(1.05);
+  box-shadow: 0 4px 6px rgba(15, 23, 42, 0.08);
+}
+
+.btn-pill-ghost {
+  background: transparent;
+  color: var(--sl-ink-700);
+}
+.btn-pill-ghost:hover {
+  background: var(--sl-kilau-50);
+  color: var(--sl-kilau-700);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

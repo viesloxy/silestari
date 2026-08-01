@@ -3,6 +3,7 @@
 
 # Internal documentation (kept local only, never pushed)
 docs/
+design-system/
 
 # OS
 .DS_Store
