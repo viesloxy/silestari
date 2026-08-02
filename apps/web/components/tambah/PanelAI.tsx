@@ -25,30 +25,43 @@ export function PanelAI({ status, kata, result }: Props) {
     >
       {status === "idle" && (
         <div>
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-sl-kilau-50 text-sl-kilau-700">
+          <div
+            className="flex h-12 w-12 items-center justify-center rounded-xl bg-sl-kilau-50 text-sl-kilau-700 opacity-0"
+            style={{ animation: "fade-in-up 0.8s ease-out 0s forwards" }}
+          >
             <Wand2 className="h-6 w-6" strokeWidth={1.75} />
           </div>
-          <h3 className="mt-5 text-lg font-semibold text-sl-ink-900">
+          <h3
+            className="mt-5 text-lg font-semibold text-sl-ink-900 opacity-0"
+            style={{ animation: "fade-in-up 0.8s ease-out 0.1s forwards" }}
+          >
             Lestari akan membaca katamu
           </h3>
-          <p className="mt-3 text-sm leading-relaxed text-sl-ink-500">
+          <p
+            className="mt-3 text-sm leading-relaxed text-sl-ink-500 opacity-0"
+            style={{ animation: "fade-in-up 0.8s ease-out 0.2s forwards" }}
+          >
             Setelah kamu klik sumbang, AI akan periksa keaslian, klasifikasi
             jenis kata, dan buat contoh kalimat natural. Kamu tinggal
             konfirmasi.
           </p>
           <ul className="mt-5 space-y-2 text-sm text-sl-ink-700">
-            <li className="flex items-start gap-2">
-              <span className="mt-1.5 h-1 w-1 rounded-full bg-sl-kilau-500" />
-              <span>Cek apakah termasuk kosakata daerah asli</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="mt-1.5 h-1 w-1 rounded-full bg-sl-kilau-500" />
-              <span>Klasifikasi jenis kata (benda, kerja, ekspresi)</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="mt-1.5 h-1 w-1 rounded-full bg-sl-kilau-500" />
-              <span>Sarankan contoh kalimat pemakaian</span>
-            </li>
+            {[
+              "Cek apakah termasuk kosakata daerah asli",
+              "Klasifikasi jenis kata (benda, kerja, ekspresi)",
+              "Sarankan contoh kalimat pemakaian",
+            ].map((teks, i) => (
+              <li
+                key={teks}
+                className="flex items-start gap-2 opacity-0"
+                style={{
+                  animation: `fade-in-up 0.6s ease-out ${0.3 + i * 0.1}s forwards`,
+                }}
+              >
+                <span className="mt-1.5 h-1 w-1 rounded-full bg-sl-kilau-500" />
+                <span>{teks}</span>
+              </li>
+            ))}
           </ul>
         </div>
       )}

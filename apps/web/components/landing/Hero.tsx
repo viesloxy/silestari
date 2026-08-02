@@ -44,7 +44,13 @@ export function Hero() {
                 Kata dari kampung,
               </span>
               <br />
-              <span className="animate-fade-in-up-delayed animate-pulse-slow inline-block bg-gradient-to-r from-sl-kilau-500 via-sl-kilau-600 to-sl-batik-500 bg-clip-text text-transparent">
+              <span
+                className="inline-block bg-gradient-to-r from-sl-kilau-500 via-sl-kilau-600 to-sl-batik-500 bg-clip-text text-transparent opacity-0"
+                style={{
+                  animation:
+                    "fade-in-up 0.8s ease-out 0.3s forwards, pulse-slow 3s ease-in-out 1.1s infinite",
+                }}
+              >
                 hidup di layar kita.
               </span>
             </h1>

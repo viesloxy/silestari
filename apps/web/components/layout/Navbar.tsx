@@ -59,6 +59,12 @@ export function Navbar() {
           <span className="text-xl font-semibold tracking-tight text-sl-ink-900 transition-colors duration-200 group-hover:text-sl-kilau-600">
             Si Lestari
           </span>
+          <span className="hidden animate-pulse-slow text-sl-ink-300 md:inline">
+            |
+          </span>
+          <span className="hidden text-sm text-sl-ink-500 md:inline">
+            Kamus Kolaboratif Bahasa Daerah
+          </span>
         </Link>
 
         <nav
