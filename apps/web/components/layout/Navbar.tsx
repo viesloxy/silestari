@@ -2,9 +2,12 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
 
 const navLinks = [
+  { href: "/", label: "Beranda" },
   { href: "/jelajahi", label: "Jelajahi" },
   { href: "/tambah", label: "Tambah Kata" },
   { href: "/tanya", label: "Tanya" },
@@ -12,23 +15,29 @@ const navLinks = [
 ];
 
 export function Navbar() {
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    // Set initial state SETELAH hydrate supaya server-client match
     const onScroll = () => setScrolled(window.scrollY > 50);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const isActive = (href: string) => {
+    if (href === "/") return pathname === "/";
+    return pathname.startsWith(href);
+  };
+
   return (
     <nav
-      className={`sticky top-0 z-50 transition-all duration-500 ${
+      className={cn(
+        "sticky top-0 z-50 transition-all duration-500",
         scrolled
           ? "bg-white/95 backdrop-blur-md border-b border-sl-ink-100 shadow-lg"
-          : "bg-transparent border-b border-transparent"
-      }`}
+          : "bg-transparent border-b border-transparent",
+      )}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link
@@ -50,36 +59,39 @@ export function Navbar() {
           <span className="text-xl font-semibold tracking-tight text-sl-ink-900 transition-colors duration-200 group-hover:text-sl-kilau-600">
             Si Lestari
           </span>
-          <span className="hidden animate-pulse-slow text-sl-ink-300 md:inline">
-            |
-          </span>
-          <span className="hidden text-sm text-sl-ink-500 md:inline">
-            Kamus Kolaboratif Bahasa Daerah
-          </span>
         </Link>
 
         <nav
           aria-label="Navigasi utama"
-          className="hidden animate-fade-in-right items-center gap-8 lg:flex"
+          className="hidden animate-fade-in-right items-center gap-7 lg:flex"
         >
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-sm font-medium text-sl-ink-700 transition-colors duration-200 hover:text-sl-kilau-600"
-            >
-              {link.label}
-            </Link>
-          ))}
+          {navLinks.map((link) => {
+            const active = isActive(link.href);
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                aria-current={active ? "page" : undefined}
+                className={cn(
+                  "relative text-sm font-medium transition-colors duration-200",
+                  active
+                    ? "text-sl-kilau-700"
+                    : "text-sl-ink-700 hover:text-sl-kilau-600",
+                )}
+              >
+                {link.label}
+                {active && (
+                  <span
+                    aria-hidden
+                    className="absolute -bottom-1.5 left-1/2 h-0.5 w-6 -translate-x-1/2 rounded-full bg-sl-kilau-500"
+                  />
+                )}
+              </Link>
+            );
+          })}
         </nav>
 
         <div className="flex animate-fade-in-right items-center gap-3">
-          <Link
-            href="/masuk"
-            className="btn-pill btn-pill-sm btn-pill-outline hidden sm:inline-flex"
-          >
-            Masuk
-          </Link>
           <Link
             href="/tambah"
             className="btn-pill btn-pill-sm btn-pill-primary"
