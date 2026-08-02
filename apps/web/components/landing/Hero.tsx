@@ -15,7 +15,7 @@ export function Hero() {
           <div className="hidden animate-fade-in-left justify-end md:flex">
             <ScrollRotate
               initialRotate={8}
-              finalRotate={-25}
+              finalRotate={-50}
               initialY={0}
               finalY={-20}
             >
@@ -101,7 +101,7 @@ export function Hero() {
           >
             <ScrollRotate
               initialRotate={-8}
-              finalRotate={25}
+              finalRotate={50}
               initialY={0}
               finalY={-20}
               flip
