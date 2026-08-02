@@ -39,7 +39,7 @@ export function BubbleAssistant({ content, sources, time }: Props) {
             {sources.map((s) => (
               <Link
                 key={s.id}
-                href={`/jelajahi?q=${encodeURIComponent(s.kata)}`}
+                href={`/kamus/${s.id}`}
                 className="rounded-full border border-sl-kilau-200 bg-sl-kilau-50 px-2.5 py-0.5 text-[11px] font-semibold text-sl-kilau-700 transition-colors hover:bg-sl-kilau-100"
               >
                 {s.kata} <span className="text-sl-kilau-600">·</span>{" "}
