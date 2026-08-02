@@ -392,7 +392,36 @@ export const mockEntries: Entry[] = [
   },
 ];
 
-// ============ Data statistik (dipakai S5 dan chip count) ============
+// ============ Data statistik (dipakai S5) ============
+export type Stat = {
+  daerah: string;
+  slug: string;
+  jumlah_kata: number;
+  jumlah_kontributor: number;
+  persen_terverifikasi: number;
+};
+
+export const mockStats: Stat[] = [
+  { daerah: "Jawa", slug: "jawa", jumlah_kata: 328, jumlah_kontributor: 92, persen_terverifikasi: 91 },
+  { daerah: "Sunda", slug: "sunda", jumlah_kata: 214, jumlah_kontributor: 61, persen_terverifikasi: 88 },
+  { daerah: "Minang", slug: "minang", jumlah_kata: 156, jumlah_kontributor: 44, persen_terverifikasi: 85 },
+  { daerah: "Batak", slug: "batak", jumlah_kata: 102, jumlah_kontributor: 32, persen_terverifikasi: 79 },
+  { daerah: "Bali", slug: "bali", jumlah_kata: 93, jumlah_kontributor: 28, persen_terverifikasi: 90 },
+  { daerah: "Madura", slug: "madura", jumlah_kata: 87, jumlah_kontributor: 25, persen_terverifikasi: 82 },
+  { daerah: "Bugis", slug: "bugis", jumlah_kata: 74, jumlah_kontributor: 22, persen_terverifikasi: 76 },
+  { daerah: "Banjar", slug: "banjar", jumlah_kata: 61, jumlah_kontributor: 18, persen_terverifikasi: 80 },
+  { daerah: "Aceh", slug: "aceh", jumlah_kata: 58, jumlah_kontributor: 17, persen_terverifikasi: 74 },
+  { daerah: "Sasak", slug: "sasak", jumlah_kata: 32, jumlah_kontributor: 11, persen_terverifikasi: 72 },
+  { daerah: "Dayak", slug: "dayak", jumlah_kata: 27, jumlah_kontributor: 9, persen_terverifikasi: 68 },
+  { daerah: "Papua", slug: "papua", jumlah_kata: 18, jumlah_kontributor: 7, persen_terverifikasi: 61 },
+];
+
+export const statusVerifikasi = [
+  { name: "Terverifikasi", value: 87, color: "#4A9E5A" },
+  { name: "Menunggu", value: 10, color: "#B08039" },
+  { name: "Diragukan", value: 3, color: "#E5484D" },
+];
+
 export const topKontributor = [
   { nama: "Aditya P.", jumlah_kata: 42, verified_pct: 92, daerah: "Jawa" },
   { nama: "Rina Maulida", jumlah_kata: 38, verified_pct: 87, daerah: "Minang" },
