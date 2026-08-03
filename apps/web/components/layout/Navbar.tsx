@@ -47,7 +47,7 @@ export function Navbar() {
         >
           <div className="rounded-lg p-1 transition-all duration-300 group-hover:scale-110 group-hover:rotate-6">
             <Image
-              src="/brand/logo.png"
+              src="/brand/logo.svg"
               alt=""
               aria-hidden
               width={32}

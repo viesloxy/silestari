@@ -100,7 +100,7 @@ export function Footer() {
               aria-label="Si Lestari"
             >
               <Image
-                src="/brand/logo.png"
+                src="/brand/logo.svg"
                 alt=""
                 aria-hidden
                 width={40}

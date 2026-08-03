@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   title: "Si Lestari, Kamus Kolaboratif Bahasa Daerah",
   description:
     "Simpan kosakata bahasa daerah Indonesia bersama komunitas. Diperiksa AI, dikukuhkan penutur asli.",
-  icons: { icon: "/brand/logo.png" },
+  icons: { icon: "/brand/logo.svg" },
 };
 
 export default function RootLayout({
