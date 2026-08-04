@@ -132,7 +132,7 @@ export function Hero() {
               width={200}
               height={200}
               priority
-              className="h-auto w-44 drop-shadow-xl"
+              className="h-auto w-44 animate-float drop-shadow-xl"
             />
           </div>
         </div>
