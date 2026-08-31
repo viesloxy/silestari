@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
+import { createPB, type Entry } from "@/lib/pocketbase";
 
 type Kata = {
   daerah: string;
@@ -12,7 +13,8 @@ type Kata = {
   gambar: string;
 };
 
-const kataPilihan: Kata[] = [
+// Fallback tampilan kalau backend tidak reachable, supaya landing tetap utuh.
+const FALLBACK: Kata[] = [
   {
     daerah: "Jawa",
     kategori: "Ekspresi",
@@ -48,7 +50,44 @@ const kataPilihan: Kata[] = [
   },
 ];
 
-export function KataPilihan() {
+// Pool ilustrasi budaya per indeks kartu, dirotar sesuai jumlah data.
+const GAMBAR_POOL = [
+  "https://images.unsplash.com/photo-1552083375-1447ce886485?w=1200&auto=format&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1587574293340-e0011c4e8ecf?w=1200&auto=format&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1544967082-d9d25d867d66?w=1200&auto=format&fit=crop&q=80",
+];
+
+async function fetchKataPilihan(): Promise<Kata[]> {
+  try {
+    const pb = createPB();
+    const result = await pb.collection("entries").getList(1, 3, {
+      filter: "ai_validated = true",
+      sort: "-upvotes",
+    });
+    if (result.items.length === 0) return FALLBACK;
+    return (result.items as unknown as Entry[]).map((e, i) => ({
+      daerah: e.daerah,
+      kategori: titleCase(e.ai_kategori ?? "lainnya"),
+      kata: e.kata,
+      arti: e.arti,
+      contoh:
+        e.contoh_kalimat ||
+        `Contoh pemakaian kata "${e.kata}" dalam percakapan sehari-hari.`,
+      kontributor: e.kontributor || "Anonim",
+      gambar: GAMBAR_POOL[i % GAMBAR_POOL.length],
+    }));
+  } catch {
+    return FALLBACK;
+  }
+}
+
+function titleCase(s: string): string {
+  return s.replace(/\b\p{L}/gu, (c) => c.toUpperCase());
+}
+
+export async function KataPilihan() {
+  const kataPilihan = await fetchKataPilihan();
+
   return (
     <section className="relative bg-sl-cream-50 py-20 md:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -73,7 +112,7 @@ export function KataPilihan() {
         <div className="grid gap-8 md:grid-cols-3">
           {kataPilihan.map((k, i) => (
             <article
-              key={k.kata}
+              key={`${k.kata}-${i}`}
               className="group flex h-full flex-col overflow-hidden rounded-2xl border border-sl-ink-100 bg-white shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-xl"
               style={{
                 animation: `fade-in-up 0.8s ease-out ${i * 150}ms forwards`,

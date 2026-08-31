@@ -1,5 +1,6 @@
 import { CountUp } from "@/components/motion/CountUp";
 import { BookOpen, Users, ShieldCheck } from "lucide-react";
+import { getStats } from "@/lib/stats";
 
 type Stat = {
   angka: number;
@@ -11,7 +12,8 @@ type Stat = {
   colorText: string;
 };
 
-const stats: Stat[] = [
+// Fallback kalau backend tidak reachable, supaya landing tetap tampil utuh.
+const FALLBACK: Stat[] = [
   {
     angka: 1240,
     label: "Kata Terdaftar",
@@ -39,7 +41,44 @@ const stats: Stat[] = [
   },
 ];
 
-export function AngkaKomunitas() {
+async function fetchStats(): Promise<Stat[]> {
+  try {
+    const stats = await getStats();
+    return [
+      {
+        angka: stats.totalKata,
+        label: "Kata Terdaftar",
+        keterangan: `dari ${stats.jumlahDaerahAktif} daerah berbeda`,
+        icon: BookOpen,
+        colorBg: "bg-sl-kilau-50",
+        colorText: "text-sl-kilau-700",
+      },
+      {
+        angka: stats.totalKontributor,
+        label: "Kontributor Aktif",
+        keterangan: "penutur asli dan pembelajar",
+        icon: Users,
+        colorBg: "bg-sl-batik-50",
+        colorText: "text-sl-batik-700",
+      },
+      {
+        angka: stats.persenVerified,
+        suffix: "%",
+        label: "Terverifikasi",
+        keterangan: "diperiksa AI dan komunitas",
+        icon: ShieldCheck,
+        colorBg: "bg-sl-daun-50",
+        colorText: "text-sl-daun-700",
+      },
+    ];
+  } catch {
+    return FALLBACK;
+  }
+}
+
+export async function AngkaKomunitas() {
+  const stats = await fetchStats();
+
   return (
     <section className="relative bg-white py-20 md:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

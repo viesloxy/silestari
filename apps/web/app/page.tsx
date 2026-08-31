@@ -12,6 +12,9 @@ import { FAQ } from "@/components/landing/FAQ";
 import { CariKamus } from "@/components/landing/CariKamus";
 import { AjakanTutup } from "@/components/landing/AjakanTutup";
 
+// Data angka + kata pilihan diambil live dari PocketBase saat request.
+export const dynamic = "force-dynamic";
+
 export default function Home() {
   return (
     <div className="min-h-screen bg-sl-cream-100">
