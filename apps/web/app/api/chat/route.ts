@@ -84,10 +84,13 @@ export async function POST(req: Request) {
   const retrieve_ms = Math.round(performance.now() - start);
 
   // 2. Generation via Gemini; fallback deterministik kalau AI gagal
+  // Chat pakai model terpisah (volume tinggi) agar kuota model validasi aman.
   const genStart = performance.now();
   let answer: string;
   try {
-    answer = await callGemini(buildChatPrompt(question, retrieved));
+    answer = await callGemini(buildChatPrompt(question, retrieved), {
+      model: process.env.GEMINI_MODEL_CHAT,
+    });
   } catch (err) {
     console.error("GET /api/chat generation:", err);
     answer = buildPlaceholderAnswer(question, retrieved);
