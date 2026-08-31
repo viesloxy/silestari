@@ -1,10 +1,10 @@
 "use client";
 
-import { useMemo, useState, useEffect, Suspense } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { mockEntries } from "@/lib/mock-data";
+import type { Entry } from "@/lib/pocketbase";
 import {
   FilterPanel,
   emptyFilters,
@@ -41,6 +41,12 @@ function JelajahiInner() {
   const [sort, setSort] = useState(initialSort);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
+  // Data dari API (sebelumnya mockEntries, di-wiring di Fase 4)
+  const [entries, setEntries] = useState<Entry[]>([]);
+  const [totalSemua, setTotalSemua] = useState<number | null>(null);
+  const [jumlahDaerah, setJumlahDaerah] = useState<number | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
   // Sync state back to URL when they change (shallow)
   useEffect(() => {
     const q = new URLSearchParams();
@@ -54,49 +60,54 @@ function JelajahiInner() {
     router.replace(url, { scroll: false });
   }, [filters, appliedSearch, sort, router]);
 
-  // Filter + sort
-  const filtered = useMemo(() => {
-    let list = mockEntries;
+  // Fetch dari API setiap filter/search/sort berubah
+  useEffect(() => {
+    const controller = new AbortController();
 
-    if (filters.daerah) {
-      list = list.filter((e) => e.daerah.toLowerCase() === filters.daerah);
-    }
-    if (filters.kategori.length) {
-      list = list.filter(
-        (e) => e.ai_kategori && filters.kategori.includes(e.ai_kategori),
-      );
-    }
-    if (filters.status.length) {
-      list = list.filter((e) => {
-        if (filters.status.includes("verified") && e.ai_validated) return true;
-        if (filters.status.includes("pending") && !e.ai_validated) return true;
-        return false;
+    const q = new URLSearchParams();
+    if (filters.daerah) q.set("daerah", filters.daerah);
+    if (filters.kategori.length) q.set("kategori", filters.kategori.join(","));
+    if (filters.status.length) q.set("status", filters.status.join(","));
+    if (appliedSearch) q.set("q", appliedSearch);
+    q.set("sort", sort);
+    q.set("perPage", "500"); // ambil semua hasil filter, slicing di client
+
+    setIsLoading(true);
+    fetch(`/api/entries?${q.toString()}`, { signal: controller.signal })
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+      .then((data) => {
+        setEntries(data.items ?? []);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        if (err.name !== "AbortError") {
+          console.error("Gagal memuat kata:", err);
+          setEntries([]);
+          setIsLoading(false);
+        }
       });
-    }
-    if (appliedSearch.trim()) {
-      const q = appliedSearch.trim().toLowerCase();
-      list = list.filter(
-        (e) =>
-          e.kata.toLowerCase().includes(q) ||
-          e.arti.toLowerCase().includes(q) ||
-          e.daerah.toLowerCase().includes(q),
-      );
-    }
 
-    const sorted = [...list];
-    if (sort === "terbaru")
-      sorted.sort((a, b) => b.created.localeCompare(a.created));
-    else if (sort === "terlama")
-      sorted.sort((a, b) => a.created.localeCompare(b.created));
-    else if (sort === "upvotes") sorted.sort((a, b) => b.upvotes - a.upvotes);
-    else if (sort === "alfabet")
-      sorted.sort((a, b) => a.kata.localeCompare(b.kata));
-
-    return sorted;
+    return () => controller.abort();
   }, [filters, appliedSearch, sort]);
 
-  const visible = filtered.slice(0, visibleCount);
-  const hasMore = visible.length < filtered.length;
+  // Total koleksi untuk subtitle (diambil sekali)
+  useEffect(() => {
+    fetch("/api/stats")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((stats) => {
+        if (stats) {
+          setTotalSemua(stats.totalKata);
+          setJumlahDaerah(stats.jumlahDaerahAktif);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const visible = entries.slice(0, visibleCount);
+  const hasMore = visible.length < entries.length;
 
   // Reset visibleCount when filter/search changes
   useEffect(() => {
@@ -124,8 +135,10 @@ function JelajahiInner() {
                 animation: "fade-in-up 0.8s ease-out 0.1s forwards",
               }}
             >
-              1 240 kata dari 24 daerah, terus bertambah setiap hari. Filter
-              berdasarkan daerah, kategori, atau cari langsung.
+              {totalSemua !== null
+                ? `${totalSemua.toLocaleString("id-ID")} kata dari ${jumlahDaerah ?? "beberapa"} daerah, terus bertambah setiap hari.`
+                : "Koleksi kata dari seluruh Nusantara, terus bertambah setiap hari."}{" "}
+              Filter berdasarkan daerah, kategori, atau cari langsung.
             </p>
           </div>
         </section>
@@ -160,7 +173,7 @@ function JelajahiInner() {
                   />
                   <p className="text-sm text-sl-ink-500">
                     <span className="font-semibold text-sl-ink-900">
-                      {filtered.length}
+                      {isLoading ? "..." : entries.length}
                     </span>{" "}
                     kata cocok
                   </p>
@@ -168,7 +181,9 @@ function JelajahiInner() {
                 <SortDropdown value={sort} onChange={setSort} />
               </div>
 
-              {visible.length === 0 ? (
+              {isLoading ? (
+                <GridSkeleton />
+              ) : visible.length === 0 ? (
                 <EmptyState />
               ) : (
                 <>
@@ -189,12 +204,12 @@ function JelajahiInner() {
                         onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
                         className="btn-pill btn-pill-md btn-pill-outline"
                       >
-                        Muat {Math.min(PAGE_SIZE, filtered.length - visible.length)} kata lagi
+                        Muat {Math.min(PAGE_SIZE, entries.length - visible.length)} kata lagi
                       </button>
                     ) : (
-                      filtered.length > PAGE_SIZE && (
+                      entries.length > PAGE_SIZE && (
                         <p className="text-sm text-sl-ink-500">
-                          Semua {filtered.length} kata sudah ditampilkan.
+                          Semua {entries.length} kata sudah ditampilkan.
                         </p>
                       )
                     )}
@@ -206,6 +221,31 @@ function JelajahiInner() {
         </section>
       </main>
       <Footer />
+    </div>
+  );
+}
+
+function GridSkeleton() {
+  return (
+    <div
+      className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+      aria-busy="true"
+      aria-label="Memuat kata"
+    >
+      {Array.from({ length: 6 }).map((_, i) => (
+        <div
+          key={i}
+          className="h-48 animate-pulse-slow rounded-2xl border border-sl-ink-100 bg-white p-6"
+          style={{ animationDelay: `${i * 80}ms` }}
+        >
+          <div className="h-3 w-24 rounded bg-sl-ink-100" />
+          <div className="mt-4 h-7 w-3/4 rounded bg-sl-ink-100" />
+          <div className="mt-4 space-y-2">
+            <div className="h-3 w-full rounded bg-sl-ink-50" />
+            <div className="h-3 w-5/6 rounded bg-sl-ink-50" />
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
