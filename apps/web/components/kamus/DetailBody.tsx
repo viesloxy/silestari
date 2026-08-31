@@ -71,7 +71,7 @@ export function DetailBody({ entry }: Props) {
               initialUpvotes={entry.upvotes ?? 0}
               entryKata={entry.kata}
               entryId={entry.id}
-      />
+            />
           </article>
 
           {/* Sidebar analisis AI */}
