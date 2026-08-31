@@ -50,7 +50,7 @@ for (const e of pending) {
     gagal++;
     console.error(`  ✗ ${e.kata}:`, err.message);
   }
-  await new Promise((r) => setTimeout(r, 1000)); // jaga kuota Gemini
+  await new Promise((r) => setTimeout(r, 10000)); // jaga kuota Gemini free tier
 }
 
 console.log(`\nSelesai: ${ok} tervalidasi, ${gagal} gagal.`);
