@@ -1,5 +1,5 @@
 import { Sparkles, Info } from "lucide-react";
-import type { Entry } from "@/lib/mock-data";
+import type { Entry } from "@/lib/pocketbase";
 import { formatTanggalIndonesia } from "@/lib/format";
 
 type Props = { entry: Entry };

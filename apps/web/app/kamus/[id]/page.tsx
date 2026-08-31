@@ -1,7 +1,8 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ArrowRight } from "lucide-react";
-import { mockEntries } from "@/lib/mock-data";
+import { createPB, type Entry } from "@/lib/pocketbase";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { DetailHeader } from "@/components/kamus/DetailHeader";
@@ -10,32 +11,46 @@ import { KataTerkait } from "@/components/kamus/KataTerkait";
 
 type Params = Promise<{ id: string }>;
 
-export async function generateStaticParams() {
-  return mockEntries.map((e) => ({ id: e.id }));
+async function fetchEntry(id: string): Promise<Entry | null> {
+  try {
+    const pb = createPB();
+    return (await pb.collection("entries").getOne(id)) as unknown as Entry;
+  } catch {
+    return null;
+  }
 }
 
-export async function generateMetadata({ params }: { params: Params }) {
+export async function generateMetadata({
+  params,
+}: {
+  params: Params;
+}): Promise<Metadata> {
   const { id } = await params;
-  const entry = mockEntries.find((e) => e.id === id);
-  if (!entry) return { title: "Kata Tidak Ditemukan" };
+  const entry = await fetchEntry(id);
+  if (!entry) return { title: "Kata Tidak Ditemukan · Si Lestari" };
   return {
     title: `${entry.kata}, arti Bahasa ${entry.daerah} · Si Lestari`,
     description: entry.arti,
   };
 }
 
-export default async function KamusDetailPage({
-  params,
-}: {
-  params: Params;
-}) {
+export default async function KamusDetailPage({ params }: { params: Params }) {
   const { id } = await params;
-  const entry = mockEntries.find((e) => e.id === id);
+  const entry = await fetchEntry(id);
   if (!entry) notFound();
 
-  const terkait = mockEntries
-    .filter((e) => e.daerah === entry.daerah && e.id !== entry.id)
-    .slice(0, 3);
+  // Kata lain dari daerah yang sama, paling didukung dulu
+  let terkait: Entry[] = [];
+  try {
+    const pb = createPB();
+    const result = await pb.collection("entries").getList(1, 4, {
+      filter: `daerah = "${entry.daerah}" && id != "${entry.id}"`,
+      sort: "-upvotes",
+    });
+    terkait = (result.items as unknown as Entry[]).slice(0, 3);
+  } catch {
+    terkait = [];
+  }
 
   return (
     <div className="min-h-screen bg-sl-cream-100">

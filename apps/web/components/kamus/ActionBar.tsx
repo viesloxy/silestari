@@ -7,17 +7,33 @@ import { Heart, Share2, Flag } from "lucide-react";
 type Props = {
   initialUpvotes: number;
   entryKata: string;
+  entryId: string;
 };
 
-export function ActionBar({ initialUpvotes, entryKata }: Props) {
+export function ActionBar({ initialUpvotes, entryKata, entryId }: Props) {
   const [upvotes, setUpvotes] = useState(initialUpvotes);
   const [hasUpvoted, setHasUpvoted] = useState(false);
 
-  const handleUpvote = () => {
+  const handleUpvote = async () => {
     if (hasUpvoted) return;
     setUpvotes((u) => u + 1);
     setHasUpvoted(true);
-    toast.success("Terima kasih dukunganmu");
+    try {
+      const res = await fetch(`/api/entries/${entryId}/upvote`, {
+        method: "POST",
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const { upvotes: total } = await res.json();
+      setUpvotes(total);
+      toast.success("Terima kasih dukunganmu");
+    } catch {
+      // rollback kalau gagal
+      setUpvotes((u) => Math.max(0, u - 1));
+      setHasUpvoted(false);
+      toast.error("Gagal memberi dukungan", {
+        description: "Coba lagi sebentar ya.",
+      });
+    }
   };
 
   const handleShare = async () => {

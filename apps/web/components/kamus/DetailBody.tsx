@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { PenLine } from "lucide-react";
-import type { Entry } from "@/lib/mock-data";
+import type { Entry } from "@/lib/pocketbase";
 import { formatTanggalIndonesia } from "@/lib/format";
 import { ActionBar } from "./ActionBar";
 import { DetailSidebar } from "./DetailSidebar";
@@ -68,9 +68,10 @@ export function DetailBody({ entry }: Props) {
 
             {/* Action bar */}
             <ActionBar
-              initialUpvotes={entry.upvotes}
+              initialUpvotes={entry.upvotes ?? 0}
               entryKata={entry.kata}
-            />
+              entryId={entry.id}
+      />
           </article>
 
           {/* Sidebar analisis AI */}

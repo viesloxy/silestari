@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import type { Entry } from "@/lib/mock-data";
+import type { Entry } from "@/lib/pocketbase";
 import { KataCard } from "@/components/jelajahi/KataCard";
 
 type Props = {

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ShieldCheck } from "lucide-react";
-import type { Entry } from "@/lib/mock-data";
+import type { Entry } from "@/lib/pocketbase";
 
 type Props = { entry: Entry };
 
