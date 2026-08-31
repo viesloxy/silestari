@@ -20,7 +20,9 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 export function TambahForm() {
-  const [status, setStatus] = useState<"idle" | "loading" | "result">("idle");
+  const [status, setStatus] = useState<
+    "idle" | "loading" | "result" | "pending"
+  >("idle");
   const [aiResult, setAiResult] = useState<AIResult | null>(null);
 
   const {
@@ -46,31 +48,65 @@ export function TambahForm() {
     setStatus("loading");
     setAiResult(null);
 
-    // Simulate AI processing 1.5s (Fase 5 akan diganti fetch ke /api/validate)
+    try {
+      const res = await fetch("/api/entries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) {
+        const body = await res.json().catch(() => null);
+        throw new Error(body?.error ?? `HTTP ${res.status}`);
+      }
+      const record: { id: string } = await res.json();
+
+      toast.success("Katamu masuk kamus", {
+        description: "Terima kasih. Komunitas akan meninjau segera.",
+      });
+
+      // Panel AI: poll status validasi tiap 2 detik, maksimal 20 detik
+      // (PRD §6: validasi AI berjalan async, tidak memblokir UI).
+      pollAiResult(record.id, data);
+    } catch (err) {
+      console.error(err);
+      setStatus("idle");
+      toast.error("Gagal menyimpan kata", {
+        description: "Cek koneksi kamu lalu coba lagi ya.",
+      });
+    }
+  };
+
+  const pollAiResult = (id: string, submitted: FormData) => {
     const start = performance.now();
-    await new Promise((r) => setTimeout(r, 1500));
-    const durasi_ms = performance.now() - start;
-
-    // Mock hasil AI, keyword-based sederhana untuk Fase 2
-    const kategoriGuess = pickKategori(data.kata, data.arti);
-    const result: AIResult = {
-      kategori: kategoriGuess,
-      contoh:
-        data.contoh_kalimat && data.contoh_kalimat.trim().length > 0
-          ? data.contoh_kalimat
-          : buildMockContoh(data.kata, data.daerah),
-      catatan: `Kata "${data.kata}" tercatat sebagai kosakata daerah ${data.daerah}. Komunitas akan meninjau dan memberi suara.`,
-      durasi_ms,
-    };
-
-    setAiResult(result);
-    setStatus("result");
-    toast.success("Katamu masuk kamus", {
-      description: "Terima kasih. Komunitas akan meninjau segera.",
-    });
-
-    // Reset form setelah 3 detik, biarkan panel result tetap
-    setTimeout(() => reset(), 3000);
+    const interval = setInterval(async () => {
+      if (performance.now() - start > 20000) {
+        clearInterval(interval);
+        setStatus("pending");
+        return;
+      }
+      try {
+        const res = await fetch(`/api/entries/${id}`);
+        if (!res.ok) return;
+        const rec = await res.json();
+        if (rec.ai_validated) {
+          clearInterval(interval);
+          setAiResult({
+            kategori: rec.ai_kategori ?? "lainnya",
+            contoh:
+              rec.contoh_kalimat ||
+              submitted.contoh_kalimat ||
+              `Contoh pemakaian kata "${submitted.kata}" dalam percakapan sehari-hari.`,
+            catatan:
+              rec.ai_catatan ||
+              `Kata "${submitted.kata}" tercatat sebagai kosakata daerah ${submitted.daerah}. Komunitas akan meninjau dan memberi suara.`,
+            durasi_ms: performance.now() - start,
+          });
+          setStatus("result");
+        }
+      } catch {
+        // biarkan polling lanjut sampai timeout
+      }
+    }, 2000);
   };
 
   const onReset = () => {
@@ -251,16 +287,3 @@ function FormField({
   );
 }
 
-function pickKategori(kata: string, arti: string): string {
-  const combined = `${kata} ${arti}`.toLowerCase();
-  if (combined.includes("makan") || combined.includes("bicara") || combined.includes("belajar"))
-    return "kata kerja";
-  if (combined.includes("terima kasih") || combined.includes("selamat") || combined.includes("salam"))
-    return "ekspresi";
-  if (combined.split(" ").length > 3) return "peribahasa";
-  return "kata benda";
-}
-
-function buildMockContoh(kata: string, daerah: string): string {
-  return `Contoh natural memakai kata "${kata}" dalam percakapan sehari-hari di ${daerah}.`;
-}

@@ -1,6 +1,6 @@
 "use client";
 
-import { Wand2, ShieldCheck } from "lucide-react";
+import { Wand2, ShieldCheck, Clock3 } from "lucide-react";
 
 export type AIResult = {
   kategori: string;
@@ -10,7 +10,7 @@ export type AIResult = {
 };
 
 type Props = {
-  status: "idle" | "loading" | "result";
+  status: "idle" | "loading" | "result" | "pending";
   kata: string;
   result: AIResult | null;
 };
@@ -83,6 +83,22 @@ export function PanelAI({ status, kata, result }: Props) {
             <div className="h-3 w-5/6 animate-pulse-slow rounded bg-sl-ink-100" />
             <div className="h-3 w-4/6 animate-pulse-slow rounded bg-sl-ink-100" />
           </div>
+        </div>
+      )}
+
+      {status === "pending" && (
+        <div>
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-sl-batik-50 text-sl-batik-700">
+            <Clock3 className="h-6 w-6" strokeWidth={1.75} />
+          </div>
+          <h3 className="mt-5 text-lg font-semibold text-sl-ink-900">
+            Katamu sudah masuk kamus
+          </h3>
+          <p className="mt-3 text-sm leading-relaxed text-sl-ink-500">
+            Lestari masih menganalisis <span className="font-semibold text-sl-ink-900">&ldquo;{kata}&rdquo;</span> di latar.
+            Hasil analisis akan muncul otomatis di halaman kata setelah
+            selesai. Terima kasih sudah berbagi.
+          </p>
         </div>
       )}
 
