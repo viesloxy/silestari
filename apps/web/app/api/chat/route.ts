@@ -81,7 +81,10 @@ export async function POST(req: Request) {
     console.error("GET /api/chat retrieval:", err);
   }
 
+  const retrieve_ms = Math.round(performance.now() - start);
+
   // 2. Generation via Gemini; fallback deterministik kalau AI gagal
+  const genStart = performance.now();
   let answer: string;
   try {
     answer = await callGemini(buildChatPrompt(question, retrieved));
@@ -89,8 +92,12 @@ export async function POST(req: Request) {
     console.error("GET /api/chat generation:", err);
     answer = buildPlaceholderAnswer(question, retrieved);
   }
+  const gen_ms = Math.round(performance.now() - genStart);
 
   const latency_ms = Math.round(performance.now() - start);
+  console.log(
+    `[chat] retrieve=${retrieve_ms}ms gen=${gen_ms}ms total=${latency_ms}ms`,
+  );
 
   // 3. Logging untuk audit (admin-only collection, best-effort)
   try {
@@ -106,7 +113,13 @@ export async function POST(req: Request) {
     console.error("GET /api/chat logging:", err);
   }
 
-  return NextResponse.json({ answer, sources: retrieved, latency_ms });
+  return NextResponse.json({
+    answer,
+    sources: retrieved,
+    latency_ms,
+    retrieve_ms,
+    gen_ms,
+  });
 }
 
 function buildPlaceholderAnswer(
