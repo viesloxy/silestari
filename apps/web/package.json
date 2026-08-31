@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "pb:setup": "node --env-file=.env.local scripts/setup-pocketbase.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.5.7",

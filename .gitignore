@@ -28,6 +28,9 @@ pnpm-debug.log*
 .env.local
 .env.*.local
 
+# PocketBase lokal (binary + data) — jangan pernah di-commit
+apps/pocketbase/
+
 # Temp
 *.tmp
 *.temp
