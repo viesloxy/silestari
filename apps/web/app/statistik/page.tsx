@@ -4,8 +4,36 @@ import { KpiRow } from "@/components/statistik/KpiRow";
 import { ChartSebaran } from "@/components/statistik/ChartSebaran";
 import { ChartStatus } from "@/components/statistik/ChartStatus";
 import { TableKontributor } from "@/components/statistik/TableKontributor";
+import { getStats, type SafeStats } from "@/lib/stats";
 
-export default function StatistikPage() {
+// Angka diambil live dari PocketBase setiap request (MVP; ISR menyusul kalau perlu).
+export const dynamic = "force-dynamic";
+
+export default async function StatistikPage() {
+  let stats: SafeStats;
+  try {
+    stats = await getStats();
+  } catch (err) {
+    console.error("Gagal memuat statistik:", err);
+    stats = {
+      totalKata: 0,
+      totalKontributor: 0,
+      jumlahDaerahAktif: 0,
+      persenVerified: 0,
+      perDaerah: [],
+      status: [
+        { name: "Terverifikasi", value: 0, color: "#4A9E5A" },
+        { name: "Menunggu", value: 0, color: "#B08039" },
+        { name: "Diragukan", value: 0, color: "#E5484D" },
+      ],
+      topKontributor: [],
+    };
+  }
+
+  const chartSebaran = stats.perDaerah
+    .map((s) => ({ nama: s.daerah, kata: s.jumlah_kata }))
+    .sort((a, b) => b.kata - a.kata);
+
   return (
     <div className="min-h-screen bg-sl-cream-100">
       <Navbar />
@@ -35,7 +63,7 @@ export default function StatistikPage() {
         {/* KPI cards */}
         <section className="pb-10">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <KpiRow />
+            <KpiRow stats={stats} />
           </div>
         </section>
 
@@ -43,8 +71,11 @@ export default function StatistikPage() {
         <section className="pb-10">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="grid gap-6 md:grid-cols-[1.6fr_1fr]">
-              <ChartSebaran />
-              <ChartStatus />
+              <ChartSebaran
+                data={chartSebaran}
+                jumlahDaerah={stats.jumlahDaerahAktif}
+              />
+              <ChartStatus data={stats.status} />
             </div>
           </div>
         </section>
@@ -52,7 +83,7 @@ export default function StatistikPage() {
         {/* Table */}
         <section className="pb-20 md:pb-28">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <TableKontributor />
+            <TableKontributor items={stats.topKontributor} />
           </div>
         </section>
       </main>

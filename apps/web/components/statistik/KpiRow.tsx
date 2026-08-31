@@ -1,23 +1,26 @@
 import { BookOpen, Users, ShieldCheck } from "lucide-react";
 import { KpiCard } from "./KpiCard";
+import type { SafeStats } from "@/lib/stats";
 
-export function KpiRow() {
+type Props = { stats: SafeStats };
+
+export function KpiRow({ stats }: Props) {
   return (
     <div className="grid gap-6 md:grid-cols-3">
       <KpiCard
         icon={BookOpen}
         colorBg="bg-sl-kilau-50"
         colorText="text-sl-kilau-700"
-        angka={1240}
+        angka={stats.totalKata}
         label="Kata Terdaftar"
-        keterangan="dari 24 daerah berbeda"
+        keterangan={`dari ${stats.jumlahDaerahAktif} daerah berbeda`}
         index={0}
       />
       <KpiCard
         icon={Users}
         colorBg="bg-sl-batik-50"
         colorText="text-sl-batik-700"
-        angka={340}
+        angka={stats.totalKontributor}
         label="Kontributor Aktif"
         keterangan="penutur asli dan pembelajar"
         index={1}
@@ -26,7 +29,7 @@ export function KpiRow() {
         icon={ShieldCheck}
         colorBg="bg-sl-daun-50"
         colorText="text-sl-daun-700"
-        angka={87}
+        angka={stats.persenVerified}
         suffix="%"
         label="Terverifikasi"
         keterangan="diperiksa AI dan komunitas"

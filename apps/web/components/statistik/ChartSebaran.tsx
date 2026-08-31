@@ -9,11 +9,10 @@ import {
   Tooltip,
   Cell,
 } from "recharts";
-import { mockStats } from "@/lib/mock-data";
 
-const data = [...mockStats]
-  .map((s) => ({ nama: s.daerah, kata: s.jumlah_kata }))
-  .sort((a, b) => b.kata - a.kata);
+type Item = { nama: string; kata: number };
+
+type Props = { data: Item[]; jumlahDaerah: number };
 
 const colorForIndex = (i: number) => {
   if (i === 0) return "#F58220"; // kilau-500
@@ -22,7 +21,7 @@ const colorForIndex = (i: number) => {
   return "#FF9B4A"; // kilau-400
 };
 
-export function ChartSebaran() {
+export function ChartSebaran({ data, jumlahDaerah }: Props) {
   return (
     <div
       className="rounded-2xl border border-sl-ink-100 bg-white p-6 shadow-sm md:p-8"
@@ -40,7 +39,7 @@ export function ChartSebaran() {
             Kata per Daerah
           </h3>
         </div>
-        <span className="text-xs text-sl-ink-500">12 daerah aktif</span>
+        <span className="text-xs text-sl-ink-500">{jumlahDaerah} daerah aktif</span>
       </div>
 
       <div

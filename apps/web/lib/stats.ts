@@ -1,6 +1,9 @@
 import { createPB, type Stats } from "./pocketbase";
 import { daerahList } from "./daerah";
 
+/** Alias untuk pemakaian di server component (nilai JSON-safe). */
+export type SafeStats = Stats;
+
 const SLUG_BY_NAMA = new Map(daerahList.map((d) => [d.nama, d.slug]));
 
 /**

@@ -7,11 +7,13 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from "recharts";
-import { statusVerifikasi } from "@/lib/mock-data";
 
-const terverifikasi = statusVerifikasi.find((s) => s.name === "Terverifikasi");
+type StatusSlice = { name: string; value: number; color: string };
 
-export function ChartStatus() {
+type Props = { data: StatusSlice[] };
+
+export function ChartStatus({ data }: Props) {
+  const terverifikasi = data.find((s) => s.name === "Terverifikasi");
   return (
     <div
       className="rounded-2xl border border-sl-ink-100 bg-white p-6 shadow-sm md:p-8"
@@ -37,7 +39,7 @@ export function ChartStatus() {
         <ResponsiveContainer width="100%" height={260}>
           <PieChart>
             <Pie
-              data={statusVerifikasi}
+              data={data}
               cx="50%"
               cy="50%"
               innerRadius={65}
@@ -47,7 +49,7 @@ export function ChartStatus() {
               startAngle={90}
               endAngle={-270}
             >
-              {statusVerifikasi.map((entry, i) => (
+              {data.map((entry, i) => (
                 <Cell key={i} fill={entry.color} strokeWidth={0} />
               ))}
             </Pie>
@@ -77,7 +79,7 @@ export function ChartStatus() {
       </div>
 
       <ul className="mt-6 space-y-3 border-t border-sl-ink-100 pt-5">
-        {statusVerifikasi.map((item) => (
+        {data.map((item) => (
           <li key={item.name} className="flex items-center justify-between text-sm">
             <div className="flex items-center gap-2.5">
               <span
