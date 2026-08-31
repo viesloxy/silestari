@@ -84,9 +84,7 @@ export async function POST(req: Request) {
   // 2. Generation via Gemini; fallback deterministik kalau AI gagal
   let answer: string;
   try {
-    answer = await callGemini(buildChatPrompt(question, retrieved), {
-      timeoutMs: 25000,
-    });
+    answer = await callGemini(buildChatPrompt(question, retrieved));
   } catch (err) {
     console.error("GET /api/chat generation:", err);
     answer = buildPlaceholderAnswer(question, retrieved);

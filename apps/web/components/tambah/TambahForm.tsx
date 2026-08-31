@@ -64,8 +64,8 @@ export function TambahForm() {
         description: "Terima kasih. Komunitas akan meninjau segera.",
       });
 
-      // Panel AI: poll status validasi tiap 2 detik, maksimal 20 detik
-      // (PRD §6: validasi AI berjalan async, tidak memblokir UI).
+      // Panel AI: poll status validasi tiap 2 detik, maksimal 35 detik
+      // (gemini-3.6-flash thinking kadang >20 detik, beda dari 2.0-flash versi PRD).
       pollAiResult(record.id, data);
     } catch (err) {
       console.error(err);
@@ -79,7 +79,7 @@ export function TambahForm() {
   const pollAiResult = (id: string, submitted: FormData) => {
     const start = performance.now();
     const interval = setInterval(async () => {
-      if (performance.now() - start > 20000) {
+      if (performance.now() - start > 35000) {
         clearInterval(interval);
         setStatus("pending");
         return;
