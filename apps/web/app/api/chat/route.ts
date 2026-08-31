@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { createAdminPB, createPB, escapeFilter } from "@/lib/pocketbase";
 import { buildChatPrompt } from "@/lib/prompts";
 import { callGemini } from "@/lib/gemini";
+import { rateLimit } from "@/lib/ratelimit";
 
 /**
  * Chatbot RAG Si Lestari (PRD F-05).
@@ -19,6 +20,15 @@ type RetrievedEntry = {
 };
 
 export async function POST(req: Request) {
+  // Lindungi kuota Gemini (PRD §14): 10 pertanyaan/menit per IP
+  const rl = rateLimit(req, { limit: 10 });
+  if (!rl.ok) {
+    return NextResponse.json(
+      { error: "Kamu bertanya terlalu cepat. Tarik napas dulu, coba lagi sebentar." },
+      { status: 429, headers: { "Retry-After": String(rl.retryAfter) } },
+    );
+  }
+
   let body: { question?: unknown; session_id?: unknown };
   try {
     body = await req.json();

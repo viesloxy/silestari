@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { createAdminPB, createPB, escapeFilter } from "@/lib/pocketbase";
+import { rateLimit } from "@/lib/ratelimit";
 
 // ── GET: daftar entri dengan filter + search + sort ──────────────────────
 // Query: ?daerah=&kategori=a,b&status=verified|pending&q=&sort=&page=&perPage=
@@ -71,6 +72,15 @@ const createSchema = z.object({
 });
 
 export async function POST(req: Request) {
+  // Anti-spam submit (PRD §6): 5 entri/menit per IP
+  const rl = rateLimit(req, { limit: 5 });
+  if (!rl.ok) {
+    return NextResponse.json(
+      { error: "Terlalu banyak sumbangan. Tunggu sebentar ya." },
+      { status: 429, headers: { "Retry-After": String(rl.retryAfter) } },
+    );
+  }
+
   let body: unknown;
   try {
     body = await req.json();
