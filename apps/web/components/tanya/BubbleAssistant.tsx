@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { Entry } from "@/lib/mock-data";
+import type { Entry } from "@/lib/pocketbase";
 
 type Props = {
   content: string;

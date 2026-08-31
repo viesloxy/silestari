@@ -8,8 +8,7 @@ import { BubbleAssistant } from "@/components/tanya/BubbleAssistant";
 import { BubbleTyping } from "@/components/tanya/BubbleTyping";
 import { InputBar } from "@/components/tanya/InputBar";
 import { WelcomeSuggestions } from "@/components/tanya/WelcomeSuggestions";
-import { generateMockAnswer } from "@/components/tanya/mock-answers";
-import type { Entry } from "@/lib/mock-data";
+import type { Entry } from "@/lib/pocketbase";
 
 type Msg = {
   id: string;
@@ -72,20 +71,37 @@ export default function TanyaPage() {
     setInput("");
     setIsTyping(true);
 
-    // Mock delay 1.5s (Fase 5 diganti fetch /api/chat)
-    await new Promise((r) => setTimeout(r, 1500));
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question: text }),
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const { answer, sources } = await res.json();
 
-    const { answer, sources } = generateMockAnswer(text);
-    const assistantMsg: Msg = {
-      id: crypto.randomUUID(),
-      role: "assistant",
-      content: answer,
-      sources,
-      createdAt: new Date().toISOString(),
-    };
-
-    setMessages((m) => [...m, assistantMsg]);
-    setIsTyping(false);
+      const assistantMsg: Msg = {
+        id: crypto.randomUUID(),
+        role: "assistant",
+        content: answer,
+        sources: sources ?? [],
+        createdAt: new Date().toISOString(),
+      };
+      setMessages((m) => [...m, assistantMsg]);
+    } catch {
+      // Fallback hangat kalau backend bermasalah (PRD §14 mitigasi)
+      const assistantMsg: Msg = {
+        id: crypto.randomUUID(),
+        role: "assistant",
+        content:
+          "Maaf, koneksi aku sedang terganggu. Coba kirim ulang pertanyaanmu sebentar lagi ya.",
+        sources: [],
+        createdAt: new Date().toISOString(),
+      };
+      setMessages((m) => [...m, assistantMsg]);
+    } finally {
+      setIsTyping(false);
+    }
   };
 
   const handleReset = () => {
