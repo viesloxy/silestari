@@ -1,11 +1,13 @@
 import { NextResponse } from "next/server";
 import { createAdminPB, createPB, escapeFilter } from "@/lib/pocketbase";
+import { buildChatPrompt } from "@/lib/prompts";
+import { callGemini } from "@/lib/gemini";
 
 /**
  * Chatbot RAG Si Lestari (PRD F-05).
- * Fase C (sekarang): retrieval dari PocketBase + jawaban deterministik.
- * Fase 5: ganti buildPlaceholderAnswer() dengan panggilan Gemini
- * (prompt di PRD §9.2), sisanya (retrieval + logging) tidak berubah.
+ * Alur: retrieval dari PocketBase -> generation via Gemini (§9.2) -> logging.
+ * Kalau Gemini gagal/timeout, jawaban jatuh ke builder deterministik
+ * berbasis entri yang sama supaya chat tetap berguna (PRD §14 mitigasi).
  */
 
 type RetrievedEntry = {
@@ -69,8 +71,16 @@ export async function POST(req: Request) {
     console.error("GET /api/chat retrieval:", err);
   }
 
-  // 2. Generation (placeholder Fase C, Gemini menyusul di Fase 5)
-  const answer = buildPlaceholderAnswer(question, retrieved);
+  // 2. Generation via Gemini; fallback deterministik kalau AI gagal
+  let answer: string;
+  try {
+    answer = await callGemini(buildChatPrompt(question, retrieved), {
+      timeoutMs: 25000,
+    });
+  } catch (err) {
+    console.error("GET /api/chat generation:", err);
+    answer = buildPlaceholderAnswer(question, retrieved);
+  }
 
   const latency_ms = Math.round(performance.now() - start);
 
