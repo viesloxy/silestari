@@ -105,7 +105,9 @@ function JelajahiInner() {
           setJumlahDaerah(stats.jumlahDaerahAktif);
           setCounts(
             Object.fromEntries(
-              stats.perDaerah.map((p) => [p.daerah, p.jumlah_kata]),
+              (
+                stats.perDaerah as { daerah: string; jumlah_kata: number }[]
+              ).map((p) => [p.daerah, p.jumlah_kata]),
             ),
           );
         }
