@@ -2,6 +2,7 @@
 
 import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { CloudOff, RefreshCw } from "lucide-react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import type { Entry } from "@/lib/pocketbase";
@@ -221,6 +222,34 @@ function JelajahiInner() {
         </section>
       </main>
       <Footer />
+    </div>
+  );
+}
+
+function ErrorState({ onRetry }: { onRetry: () => void }) {
+  return (
+    <div
+      role="alert"
+      className="flex flex-col items-center rounded-2xl border border-sl-ink-100 bg-white px-6 py-16 text-center shadow-sm"
+    >
+      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-sl-batik-50 text-sl-batik-700">
+        <CloudOff className="h-6 w-6" strokeWidth={1.75} />
+      </div>
+      <h3 className="mt-5 text-lg font-semibold text-sl-ink-900">
+        Kamus tidak bisa dimuat
+      </h3>
+      <p className="mt-2 max-w-sm text-sm leading-relaxed text-sl-ink-500">
+        Koneksi ke server kamus terganggu. Periksa internetmu atau coba lagi
+        sebentar.
+      </p>
+      <button
+        type="button"
+        onClick={onRetry}
+        className="btn-pill btn-pill-md btn-pill-primary mt-6"
+      >
+        <RefreshCw className="h-4 w-4" />
+        Coba Lagi
+      </button>
     </div>
   );
 }
