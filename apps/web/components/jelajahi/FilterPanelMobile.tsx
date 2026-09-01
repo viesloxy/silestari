@@ -15,9 +15,11 @@ type Props = {
   filters: Filters;
   onChange: (f: Filters) => void;
   onReset: () => void;
+  /** Jumlah kata nyata per daerah, dari /api/stats. */
+  counts?: Record<string, number>;
 };
 
-export function FilterPanelMobile({ filters, onChange, onReset }: Props) {
+export function FilterPanelMobile({ filters, onChange, onReset, counts }: Props) {
   const [open, setOpen] = useState(false);
 
   const activeCount =
@@ -52,6 +54,7 @@ export function FilterPanelMobile({ filters, onChange, onReset }: Props) {
             filters={filters}
             onChange={onChange}
             onReset={onReset}
+            counts={counts}
           />
         </div>
       </SheetContent>

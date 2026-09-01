@@ -46,6 +46,7 @@ function JelajahiInner() {
   const [entries, setEntries] = useState<Entry[]>([]);
   const [totalSemua, setTotalSemua] = useState<number | null>(null);
   const [jumlahDaerah, setJumlahDaerah] = useState<number | null>(null);
+  const [counts, setCounts] = useState<Record<string, number> | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   // Sync state back to URL when they change (shallow)
@@ -94,7 +95,7 @@ function JelajahiInner() {
     return () => controller.abort();
   }, [filters, appliedSearch, sort]);
 
-  // Total koleksi untuk subtitle (diambil sekali)
+  // Total koleksi + jumlah per daerah untuk subtitle & filter (diambil sekali)
   useEffect(() => {
     fetch("/api/stats")
       .then((res) => (res.ok ? res.json() : null))
@@ -102,6 +103,11 @@ function JelajahiInner() {
         if (stats) {
           setTotalSemua(stats.totalKata);
           setJumlahDaerah(stats.jumlahDaerahAktif);
+          setCounts(
+            Object.fromEntries(
+              stats.perDaerah.map((p) => [p.daerah, p.jumlah_kata]),
+            ),
+          );
         }
       })
       .catch(() => {});
@@ -160,6 +166,7 @@ function JelajahiInner() {
                 filters={filters}
                 onChange={setFilters}
                 onReset={handleResetFilter}
+                counts={counts ?? undefined}
               />
             </div>
 
@@ -171,6 +178,7 @@ function JelajahiInner() {
                     filters={filters}
                     onChange={setFilters}
                     onReset={handleResetFilter}
+                    counts={counts ?? undefined}
                   />
                   <p className="text-sm text-sl-ink-500">
                     <span className="font-semibold text-sl-ink-900">

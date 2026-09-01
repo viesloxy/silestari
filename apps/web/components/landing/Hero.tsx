@@ -2,8 +2,23 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { ScrollRotate } from "@/components/motion/ScrollRotate";
+import { getStats } from "@/lib/stats";
 
-export function Hero() {
+export async function Hero() {
+  // Angka live dari PocketBase; fallback "tersembunyi" kalau backend mati
+  let angka: { kata: string; daerah: string; kontributor: string } | null =
+    null;
+  try {
+    const stats = await getStats();
+    angka = {
+      kata: stats.totalKata.toLocaleString("id-ID"),
+      daerah: String(stats.jumlahDaerahAktif),
+      kontributor: stats.totalKontributor.toLocaleString("id-ID"),
+    };
+  } catch {
+    angka = null;
+  }
+
   return (
     <section
       className="relative -mt-16 overflow-hidden pt-32 pb-16 md:pt-36 md:pb-20"
@@ -86,15 +101,19 @@ export function Hero() {
               className="mt-8 flex items-center justify-center gap-4 text-xs text-sl-ink-500 opacity-0"
               style={{ animation: "fade-in-up 0.8s ease-out 0.9s forwards" }}
             >
-              <span>1 240 kata terdaftar</span>
-              <span aria-hidden className="text-sl-ink-300">
-                &middot;
-              </span>
-              <span>24 daerah</span>
-              <span aria-hidden className="text-sl-ink-300">
-                &middot;
-              </span>
-              <span>340 kontributor</span>
+              {angka && (
+                <>
+                  <span>{angka.kata} kata terdaftar</span>
+                  <span aria-hidden className="text-sl-ink-300">
+                    &middot;
+                  </span>
+                  <span>{angka.daerah} daerah</span>
+                  <span aria-hidden className="text-sl-ink-300">
+                    &middot;
+                  </span>
+                  <span>{angka.kontributor} kontributor</span>
+                </>
+              )}
             </div>
           </div>
 

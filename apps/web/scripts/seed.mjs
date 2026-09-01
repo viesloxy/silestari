@@ -1,12 +1,10 @@
 /**
  * Seed kamus dari scripts/seed-data.json ke PocketBase.
  *
- * Pemakaian (dari apps/web):
- *   npm run seed            # skip kalau sudah ada entri
- *   npm run seed -- --force # tetap seed walau sudah ada
+ * Idempotent-additive: entri dengan kata yang sudah ada (case-insensitive)
+ * dilewati, jadi aman dijalankan berulang dan hanya menambah yang baru.
  *
- * Aman dijalankan ulang ke instance mana pun (lokal/PocketHost/Fly.io):
- * cukup ganti env di .env.local lalu jalankan lagi.
+ * Pemakaian (dari apps/web):  npm run seed
  */
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -14,7 +12,6 @@ import { dirname, join } from "node:path";
 import PocketBase from "pocketbase";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const force = process.argv.includes("--force");
 
 const url = process.env.NEXT_PUBLIC_POCKETBASE_URL;
 const email = process.env.POCKETBASE_ADMIN_EMAIL;
@@ -33,17 +30,30 @@ const pb = new PocketBase(url);
 await pb.collection("_superusers").authWithPassword(email, password);
 console.log(`✓ Superuser terautentikasi @ ${url}`);
 
-const existing = await pb.collection("entries").getList(1, 1);
-if (existing.totalItems > 0 && !force) {
-  console.log(
-    `= Collection entries sudah berisi ${existing.totalItems} record, seed dilewati. Gunakan --force untuk tetap menambah.`,
-  );
+// Kata yang sudah ada di database (lowercase) -> dilewati agar tidak duplikat
+const existing = await pb.collection("entries").getFullList({
+  fields: "kata",
+  filter: "ai_validated = true || ai_validated = false",
+});
+const existingKata = new Set(
+  existing.map((e) => e.kata.trim().toLowerCase()),
+);
+
+const baru = seedData.filter(
+  (e) => !existingKata.has(String(e.kata).trim().toLowerCase()),
+);
+console.log(
+  `Database berisi ${existing.length} entri. Dari ${seedData.length} data seed, ${baru.length} entri baru akan ditambah.`,
+);
+
+if (baru.length === 0) {
+  console.log("✓ Tidak ada entri baru untuk di-seed.");
   process.exit(0);
 }
 
 let ok = 0;
 let gagal = 0;
-for (const entry of seedData) {
+for (const entry of baru) {
   const { id: _id, created: _created, ...data } = entry;
   try {
     await pb.collection("entries").create({
@@ -60,4 +70,4 @@ for (const entry of seedData) {
   }
 }
 
-console.log(`\nSelesai: ${ok} masuk, ${gagal} gagal (target seed ≥ 50 sesuai PRD, saat ini ${seedData.length}).`);
+console.log(`\nSelesai: ${ok} masuk, ${gagal} gagal. Total entri di database sekarang: ${existing.length + ok}.`);

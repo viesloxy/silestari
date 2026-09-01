@@ -18,9 +18,11 @@ type Props = {
   filters: Filters;
   onChange: (f: Filters) => void;
   onReset: () => void;
+  /** Jumlah kata nyata per daerah (nama daerah -> jumlah), dari /api/stats. */
+  counts?: Record<string, number>;
 };
 
-export function FilterPanel({ filters, onChange, onReset }: Props) {
+export function FilterPanel({ filters, onChange, onReset, counts }: Props) {
   const setDaerah = (slug: string) => onChange({ ...filters, daerah: slug });
 
   const toggleKategori = (k: string) => {
@@ -84,7 +86,9 @@ export function FilterPanel({ filters, onChange, onReset }: Props) {
                   {d.nama}
                 </span>
               </div>
-              <span className="text-xs text-sl-ink-500">{d.jumlah}</span>
+              <span className="text-xs text-sl-ink-500">
+                {counts?.[d.nama] ?? ""}
+              </span>
             </label>
           ))}
         </div>
