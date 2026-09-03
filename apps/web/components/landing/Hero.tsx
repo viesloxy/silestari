@@ -47,7 +47,7 @@ export async function Hero() {
 
           {/* Konten center */}
           <div className="text-center">
-            <p className="animate-fade-in-up text-xs font-semibold uppercase tracking-[0.18em] text-sl-kilau-600">
+            <p className="animate-fade-in-up text-xs font-semibold tracking-[0.18em] text-sl-kilau-600">
               Kamus Kolaboratif Bahasa Daerah
             </p>
 

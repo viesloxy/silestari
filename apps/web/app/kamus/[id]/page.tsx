@@ -63,7 +63,7 @@ export default async function KamusDetailPage({ params }: { params: Params }) {
         {/* CTA closing */}
         <section className="py-16 md:py-20">
           <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-sl-kilau-600">
+            <p className="text-xs font-semibold tracking-[0.18em] text-sl-kilau-600">
               Punya versi lain?
             </p>
             <h2 className="mt-4 text-2xl font-bold leading-tight tracking-tight text-sl-ink-900 md:text-3xl">

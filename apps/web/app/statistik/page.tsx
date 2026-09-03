@@ -41,7 +41,7 @@ export default async function StatistikPage() {
         {/* Header */}
         <section className="pt-24 pb-8 md:pt-28 md:pb-12">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <p className="animate-fade-in-up text-xs font-semibold uppercase tracking-[0.18em] text-sl-kilau-600">
+            <p className="animate-fade-in-up text-xs font-semibold tracking-[0.18em] text-sl-kilau-600">
               Denyut Komunitas
             </p>
             <h1

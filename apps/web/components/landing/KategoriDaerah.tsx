@@ -23,7 +23,7 @@ export function KategoriDaerah() {
     <section className="relative bg-white py-20 md:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-14 text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-sl-kilau-600">
+          <p className="text-xs font-semibold tracking-[0.18em] text-sl-kilau-600">
             Bahasa yang Sudah Berhimpun
           </p>
           <h2 className="mt-4 text-3xl font-bold leading-tight tracking-tight text-sl-ink-900 md:text-4xl">

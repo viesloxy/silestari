@@ -273,7 +273,7 @@ function FormField({
     <div>
       <label
         htmlFor={id}
-        className="mb-2 block text-xs font-semibold uppercase tracking-[0.14em] text-sl-ink-700"
+        className="mb-2 block text-xs font-semibold tracking-[0.14em] text-sl-ink-700"
       >
         {label}
         {required && <span className="ml-1 text-sl-kilau-500">*</span>}

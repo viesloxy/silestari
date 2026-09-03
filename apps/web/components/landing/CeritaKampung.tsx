@@ -46,7 +46,7 @@ export function CeritaKampung() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-14 flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-sl-kilau-600">
+            <p className="text-xs font-semibold tracking-[0.18em] text-sl-kilau-600">
               Cerita dari Kampung
             </p>
             <h2 className="mt-4 text-3xl font-bold leading-tight tracking-tight text-sl-ink-900 md:text-4xl">

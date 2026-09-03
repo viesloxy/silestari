@@ -36,7 +36,7 @@ export function DetailHeader({ entry }: Props) {
           <span className="font-semibold text-sl-ink-900">{entry.kata}</span>
         </nav>
 
-        <div className="flex flex-wrap items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-sl-ink-500">
+        <div className="flex flex-wrap items-center gap-2 text-[11px] font-semibold tracking-[0.18em] text-sl-ink-500">
           <span>{entry.daerah}</span>
           {entry.ai_kategori && (
             <>

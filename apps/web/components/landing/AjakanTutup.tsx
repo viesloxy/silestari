@@ -6,7 +6,7 @@ export function AjakanTutup() {
     <section className="relative bg-white py-24 md:py-32">
       <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
         <p
-          className="text-xs font-semibold uppercase tracking-[0.18em] text-sl-kilau-600 opacity-0"
+          className="text-xs font-semibold tracking-[0.18em] text-sl-kilau-600 opacity-0"
           style={{ animation: "fade-in-up 0.8s ease-out forwards" }}
         >
           Giliranmu

@@ -14,7 +14,7 @@ export function KataCard({ entry, index = 0 }: Props) {
         opacity: 0,
       }}
     >
-      <div className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.14em] text-sl-ink-500">
+      <div className="flex items-center gap-2 text-[11px] font-medium tracking-[0.14em] text-sl-ink-500">
         <span>{entry.daerah}</span>
         {entry.ai_kategori && (
           <>

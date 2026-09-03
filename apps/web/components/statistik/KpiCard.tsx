@@ -41,7 +41,7 @@ export function KpiCard({
         {suffix && <span className="text-sl-kilau-500">{suffix}</span>}
       </p>
 
-      <p className="mt-3 text-sm font-semibold uppercase tracking-wider text-sl-ink-700">
+      <p className="mt-3 text-sm font-semibold tracking-wider text-sl-ink-700">
         {label}
       </p>
       <p className="mt-1 text-sm text-sl-ink-500">{keterangan}</p>

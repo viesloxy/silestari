@@ -132,7 +132,7 @@ function JelajahiInner() {
         {/* Header */}
         <section className="pt-24 pb-8 md:pt-28">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <p className="animate-fade-in-up text-xs font-semibold uppercase tracking-[0.18em] text-sl-kilau-600">
+            <p className="animate-fade-in-up text-xs font-semibold tracking-[0.18em] text-sl-kilau-600">
               Jelajahi Kamus
             </p>
             <h1 className="animate-fade-in-up mt-4 text-3xl font-bold leading-tight tracking-tight text-sl-ink-900 md:text-4xl">

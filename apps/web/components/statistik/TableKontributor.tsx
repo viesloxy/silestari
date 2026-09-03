@@ -22,7 +22,7 @@ export function TableKontributor({ items }: Props) {
     >
       <div className="mb-6 flex flex-wrap items-start justify-between gap-3">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-sl-ink-500">
+          <p className="text-xs font-semibold tracking-[0.14em] text-sl-ink-500">
             Papan Kontributor
           </p>
           <h3 className="mt-1 text-xl font-bold text-sl-ink-900">
@@ -49,7 +49,7 @@ export function TableKontributor({ items }: Props) {
               Daftar kontributor teratas Si Lestari beserta jumlah kata dan tingkat verifikasi
             </caption>
             <thead>
-              <tr className="border-b border-sl-ink-100 text-left text-xs font-semibold uppercase tracking-wider text-sl-ink-500">
+              <tr className="border-b border-sl-ink-100 text-left text-xs font-semibold tracking-wider text-sl-ink-500">
                 <th className="w-16 py-3 pr-4">Rank</th>
                 <th className="py-3 pr-4">Kontributor</th>
                 <th className="py-3 pr-4 text-right">Kata</th>

@@ -7,7 +7,7 @@ export default function NotFound() {
     <div className="min-h-screen bg-sl-cream-100">
       <Navbar />
       <main className="mx-auto flex max-w-2xl flex-col items-center justify-center px-6 pt-32 pb-24 text-center">
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-sl-kilau-600">
+        <p className="text-xs font-semibold tracking-[0.18em] text-sl-kilau-600">
           Halaman Tidak Ada
         </p>
         <h1 className="mt-4 text-4xl font-bold leading-tight tracking-tight text-sl-ink-900 md:text-5xl">

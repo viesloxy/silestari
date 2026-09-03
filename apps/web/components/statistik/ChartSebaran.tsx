@@ -32,7 +32,7 @@ export function ChartSebaran({ data, jumlahDaerah }: Props) {
     >
       <div className="mb-6 flex items-start justify-between">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-sl-ink-500">
+          <p className="text-xs font-semibold tracking-[0.14em] text-sl-ink-500">
             Sebaran
           </p>
           <h3 className="mt-1 text-xl font-bold text-sl-ink-900">

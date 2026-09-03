@@ -23,7 +23,7 @@ export function ChartStatus({ data }: Props) {
       }}
     >
       <div className="mb-6">
-        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-sl-ink-500">
+        <p className="text-xs font-semibold tracking-[0.14em] text-sl-ink-500">
           Status
         </p>
         <h3 className="mt-1 text-xl font-bold text-sl-ink-900">
@@ -71,7 +71,7 @@ export function ChartStatus({ data }: Props) {
               {terverifikasi.value}
               <span className="text-xl">%</span>
             </span>
-            <span className="mt-0.5 text-[11px] font-medium uppercase tracking-wider text-sl-ink-500">
+            <span className="mt-0.5 text-[11px] font-medium tracking-wider text-sl-ink-500">
               Terverifikasi
             </span>
           </div>

@@ -51,7 +51,7 @@ export function FilterPanel({ filters, onChange, onReset, counts }: Props) {
     >
       {/* Daerah */}
       <section>
-        <h3 className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-sl-ink-700">
+        <h3 className="mb-3 text-xs font-semibold tracking-[0.14em] text-sl-ink-700">
           Daerah
         </h3>
         <div className="space-y-2">
@@ -96,7 +96,7 @@ export function FilterPanel({ filters, onChange, onReset, counts }: Props) {
 
       {/* Kategori */}
       <section>
-        <h3 className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-sl-ink-700">
+        <h3 className="mb-3 text-xs font-semibold tracking-[0.14em] text-sl-ink-700">
           Kategori
         </h3>
         <div className="space-y-2">
@@ -121,7 +121,7 @@ export function FilterPanel({ filters, onChange, onReset, counts }: Props) {
 
       {/* Status */}
       <section>
-        <h3 className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-sl-ink-700">
+        <h3 className="mb-3 text-xs font-semibold tracking-[0.14em] text-sl-ink-700">
           Status
         </h3>
         <div className="space-y-2">

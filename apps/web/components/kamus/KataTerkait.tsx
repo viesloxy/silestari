@@ -16,7 +16,7 @@ export function KataTerkait({ items, daerah }: Props) {
       <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         <div className="mb-8 flex flex-wrap items-end justify-between gap-3">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-sl-kilau-600">
+            <p className="text-xs font-semibold tracking-[0.18em] text-sl-kilau-600">
               Kata Terkait
             </p>
             <h2 className="mt-3 text-2xl font-bold leading-tight tracking-tight text-sl-ink-900 md:text-3xl">

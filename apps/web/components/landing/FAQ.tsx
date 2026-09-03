@@ -46,7 +46,7 @@ export function FAQ() {
             <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-sl-kilau-100 text-sl-kilau-700 shadow-md">
               <HelpCircle className="h-6 w-6" strokeWidth={1.75} />
             </div>
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-sl-kilau-600">
+            <p className="text-xs font-semibold tracking-[0.18em] text-sl-kilau-600">
               Pertanyaan Umum
             </p>
             <h2 className="mt-4 text-3xl font-bold leading-tight tracking-tight text-sl-ink-900 md:text-4xl">

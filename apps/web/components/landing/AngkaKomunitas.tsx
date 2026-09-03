@@ -83,7 +83,7 @@ export async function AngkaKomunitas() {
     <section className="relative bg-white py-20 md:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-14 max-w-2xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-sl-kilau-600">
+          <p className="text-xs font-semibold tracking-[0.18em] text-sl-kilau-600">
             Denyut Komunitas
           </p>
           <h2 className="mt-4 text-3xl font-bold leading-tight tracking-tight text-sl-ink-900 md:text-4xl">
@@ -117,7 +117,7 @@ export async function AngkaKomunitas() {
                 )}
               </p>
 
-              <p className="mt-4 text-sm font-semibold uppercase tracking-wider text-sl-ink-700">
+              <p className="mt-4 text-sm font-semibold tracking-wider text-sl-ink-700">
                 {s.label}
               </p>
               <p className="mt-1 text-sm text-sl-ink-500">{s.keterangan}</p>

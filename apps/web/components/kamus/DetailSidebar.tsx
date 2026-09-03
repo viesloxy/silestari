@@ -14,7 +14,7 @@ export function DetailSidebar({ entry }: Props) {
         <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-sl-batik-50 text-sl-batik-700">
           <Info className="h-5 w-5" strokeWidth={1.75} />
         </div>
-        <h3 className="mt-4 text-sm font-semibold uppercase tracking-[0.14em] text-sl-ink-700">
+        <h3 className="mt-4 text-sm font-semibold tracking-[0.14em] text-sl-ink-700">
           Menunggu Verifikasi
         </h3>
         <p className="mt-2 text-sm leading-relaxed text-sl-ink-500">
@@ -33,14 +33,14 @@ export function DetailSidebar({ entry }: Props) {
       <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-sl-kilau-50 text-sl-kilau-700">
         <Sparkles className="h-5 w-5" strokeWidth={1.75} />
       </div>
-      <h3 className="mt-4 text-sm font-semibold uppercase tracking-[0.14em] text-sl-ink-700">
+      <h3 className="mt-4 text-sm font-semibold tracking-[0.14em] text-sl-ink-700">
         Analisis AI
       </h3>
 
       <dl className="mt-5 space-y-4 text-sm">
         {entry.ai_kategori && (
           <div>
-            <dt className="text-xs font-medium uppercase tracking-wider text-sl-ink-500">
+            <dt className="text-xs font-medium tracking-wider text-sl-ink-500">
               Kategori
             </dt>
             <dd className="mt-1 inline-flex rounded-full bg-sl-kilau-50 px-3 py-0.5 text-xs font-semibold capitalize text-sl-kilau-700">
@@ -50,7 +50,7 @@ export function DetailSidebar({ entry }: Props) {
         )}
 
         <div>
-          <dt className="text-xs font-medium uppercase tracking-wider text-sl-ink-500">
+          <dt className="text-xs font-medium tracking-wider text-sl-ink-500">
             Keaslian Dialek
           </dt>
           <dd className="mt-1 text-sl-ink-900">
@@ -62,7 +62,7 @@ export function DetailSidebar({ entry }: Props) {
 
         {entry.ai_catatan && (
           <div>
-            <dt className="text-xs font-medium uppercase tracking-wider text-sl-ink-500">
+            <dt className="text-xs font-medium tracking-wider text-sl-ink-500">
               Catatan
             </dt>
             <dd className="mt-1 leading-relaxed text-sl-ink-700">
@@ -72,7 +72,7 @@ export function DetailSidebar({ entry }: Props) {
         )}
 
         <div>
-          <dt className="text-xs font-medium uppercase tracking-wider text-sl-ink-500">
+          <dt className="text-xs font-medium tracking-wider text-sl-ink-500">
             Diperiksa
           </dt>
           <dd className="mt-1 text-sl-ink-700">

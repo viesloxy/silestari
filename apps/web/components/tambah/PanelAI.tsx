@@ -104,7 +104,7 @@ export function PanelAI({ status, kata, result }: Props) {
 
       {status === "result" && result && (
         <div>
-          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-sl-daun-700">
+          <div className="flex items-center gap-2 text-xs font-semibold tracking-[0.14em] text-sl-daun-700">
             <ShieldCheck className="h-4 w-4" strokeWidth={2} />
             <span>Terverifikasi AI</span>
             <span aria-hidden className="text-sl-ink-300">
@@ -117,7 +117,7 @@ export function PanelAI({ status, kata, result }: Props) {
 
           <div className="mt-6 space-y-6">
             <div>
-              <h4 className="text-xs font-semibold uppercase tracking-[0.14em] text-sl-ink-500">
+              <h4 className="text-xs font-semibold tracking-[0.14em] text-sl-ink-500">
                 Kategori
               </h4>
               <span className="mt-2 inline-flex items-center rounded-full bg-sl-kilau-50 px-3 py-1 text-xs font-semibold capitalize text-sl-kilau-700">
@@ -126,7 +126,7 @@ export function PanelAI({ status, kata, result }: Props) {
             </div>
 
             <div>
-              <h4 className="text-xs font-semibold uppercase tracking-[0.14em] text-sl-ink-500">
+              <h4 className="text-xs font-semibold tracking-[0.14em] text-sl-ink-500">
                 Contoh Kalimat
               </h4>
               <p className="mt-2 border-l-2 border-sl-kilau-200 pl-4 text-sm italic leading-relaxed text-sl-ink-700">
@@ -135,7 +135,7 @@ export function PanelAI({ status, kata, result }: Props) {
             </div>
 
             <div>
-              <h4 className="text-xs font-semibold uppercase tracking-[0.14em] text-sl-ink-500">
+              <h4 className="text-xs font-semibold tracking-[0.14em] text-sl-ink-500">
                 Catatan Lestari
               </h4>
               <p className="mt-2 text-sm leading-relaxed text-sl-ink-700">

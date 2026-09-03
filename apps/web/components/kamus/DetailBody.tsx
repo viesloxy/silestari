@@ -19,7 +19,7 @@ export function DetailBody({ entry }: Props) {
           >
             {/* Arti */}
             <section>
-              <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-sl-ink-500">
+              <h2 className="text-xs font-semibold tracking-[0.14em] text-sl-ink-500">
                 Arti
               </h2>
               <p className="mt-3 text-lg leading-relaxed text-sl-ink-700 md:text-xl">
@@ -29,7 +29,7 @@ export function DetailBody({ entry }: Props) {
 
             {/* Contoh kalimat */}
             <section className="mt-10">
-              <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-sl-ink-500">
+              <h2 className="text-xs font-semibold tracking-[0.14em] text-sl-ink-500">
                 Contoh Kalimat
               </h2>
               {entry.contoh_kalimat ? (
