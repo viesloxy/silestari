@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { createPB, type Entry } from "@/lib/pocketbase";
@@ -10,7 +9,6 @@ type Kata = {
   arti: string;
   contoh: string;
   kontributor: string;
-  gambar: string;
 };
 
 // Fallback tampilan kalau backend tidak reachable, supaya landing tetap utuh.
@@ -23,8 +21,6 @@ const FALLBACK: Kata[] = [
       "Ungkapan terima kasih yang disampaikan dengan hormat, sering diiringi anggukan halus.",
     contoh: "Matur nuwun sampun rawuh ing griya kula.",
     kontributor: "Aditya P.",
-    gambar:
-      "https://images.unsplash.com/photo-1552083375-1447ce886485?w=1200&auto=format&fit=crop&q=80",
   },
   {
     daerah: "Minang",
@@ -34,8 +30,6 @@ const FALLBACK: Kata[] = [
       "Alam yang terbentang menjadi guru. Belajar dari kejadian di sekitar, bukan hanya dari buku.",
     contoh: "Kok indak dapek di buku, cubo caliak alam.",
     kontributor: "Rina M.",
-    gambar:
-      "https://images.unsplash.com/photo-1587574293340-e0011c4e8ecf?w=1200&auto=format&fit=crop&q=80",
   },
   {
     daerah: "Bali",
@@ -45,16 +39,14 @@ const FALLBACK: Kata[] = [
       "Wadah kecil dari daun kelapa berisi bunga dan dupa, untuk persembahyangan harian.",
     contoh: "Ibu meletakkan canang di depan pintu setiap pagi.",
     kontributor: "Wayan S.",
-    gambar:
-      "https://images.unsplash.com/photo-1544967082-d9d25d867d66?w=1200&auto=format&fit=crop&q=80",
   },
 ];
 
-// Pool ilustrasi budaya per indeks kartu, dirotar sesuai jumlah data.
-const GAMBAR_POOL = [
-  "https://images.unsplash.com/photo-1552083375-1447ce886485?w=1200&auto=format&fit=crop&q=80",
-  "https://images.unsplash.com/photo-1587574293340-e0011c4e8ecf?w=1200&auto=format&fit=crop&q=80",
-  "https://images.unsplash.com/photo-1544967082-d9d25d867d66?w=1200&auto=format&fit=crop&q=80",
+// Pelat warna kartu mengikuti aturan 3-kolom design system: kilau, batik, daun.
+const PLATE = [
+  "bg-sl-kilau-500",
+  "bg-sl-batik-500",
+  "bg-sl-daun-500",
 ];
 
 async function fetchKataPilihan(): Promise<Kata[]> {
@@ -65,7 +57,7 @@ async function fetchKataPilihan(): Promise<Kata[]> {
       sort: "-upvotes",
     });
     if (result.items.length === 0) return FALLBACK;
-    return (result.items as unknown as Entry[]).map((e, i) => ({
+    return (result.items as unknown as Entry[]).map((e) => ({
       daerah: e.daerah,
       kategori: titleCase(e.ai_kategori ?? "lainnya"),
       kata: e.kata,
@@ -74,7 +66,6 @@ async function fetchKataPilihan(): Promise<Kata[]> {
         e.contoh_kalimat ||
         `Contoh pemakaian kata "${e.kata}" dalam percakapan sehari-hari.`,
       kontributor: e.kontributor || "Anonim",
-      gambar: GAMBAR_POOL[i % GAMBAR_POOL.length],
     }));
   } catch {
     return FALLBACK;
@@ -93,7 +84,7 @@ export async function KataPilihan() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-14 flex flex-col justify-between gap-6 md:flex-row md:items-end md:text-left">
           <div className="text-center md:text-left">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-sl-kilau-600">
+            <p className="text-xs font-semibold tracking-[0.18em] text-sl-kilau-600">
               Dari Kamus
             </p>
             <h2 className="mt-4 text-3xl font-bold leading-tight tracking-tight text-sl-ink-900 md:text-4xl">
@@ -119,15 +110,13 @@ export async function KataPilihan() {
                 opacity: 0,
               }}
             >
-              <div className="relative h-56 w-full overflow-hidden">
-                <Image
-                  src={k.gambar}
-                  alt={`Ilustrasi budaya ${k.daerah}`}
-                  fill
-                  sizes="(min-width: 768px) 33vw, 100vw"
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
+              {/* Pelat kata: visual utama adalah kata itu sendiri */}
+              <div
+                className={`relative flex h-56 w-full items-center justify-center overflow-hidden ${PLATE[i % PLATE.length]}`}
+              >
+                <span className="break-words px-6 text-center text-3xl font-extrabold leading-tight tracking-tight text-white md:text-4xl">
+                  {k.kata}
+                </span>
                 <div className="absolute bottom-3 left-3 flex items-center gap-2 text-xs font-medium text-white">
                   <span className="rounded-full bg-white/95 px-3 py-1 text-sl-ink-900">
                     {k.daerah}
