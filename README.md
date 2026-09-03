@@ -16,7 +16,7 @@
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-06B6D4?logo=tailwindcss)
 
 Karya untuk kompetisi **IT CONVERT 2026 · Software Development**
-Subtema: *AI for Society and Culture* · Himpunan Mahasiswa Sistem Informasi FMIPA UNEJ
+Subtema: *AI for Society and Culture* · Himpunan Mahasiswa Sistem Informasi UNEJ
 
 </div>
 
