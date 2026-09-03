@@ -20,6 +20,10 @@ Subtema: *AI for Society and Culture* · Himpunan Mahasiswa Sistem Informasi FMI
 
 </div>
 
+> ⚡ **Mau langsung menjalankan?** Lihat panduan singkat di [CARA-MENJALANKAN.md](./CARA-MENJALANKAN.md)
+> — atau cukup **double-click `MULAI.bat`**. Jika muncul error `HTTP 502`, itu tanda
+> backend PocketBase belum berjalan.
+
 ---
 
 ## 📖 Tentang Proyek
