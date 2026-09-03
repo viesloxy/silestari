@@ -6,7 +6,7 @@
 
 **Platform Kolaboratif Pelestarian Kosakata Bahasa Daerah Indonesia berbasis AI**
 
-*Sumbangkan katamu — AI memvalidasi, komunitas mengukuhkan, semuanya jadi kamus hidup.*
+*Sumbangkan katamu, AI memvalidasi, komunitas mengukuhkan. Semuanya menjadi kamus hidup.*
 
 ![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=nextdotjs)
 ![React](https://img.shields.io/badge/React-19-149ECA?logo=react)
@@ -15,7 +15,7 @@
 ![Google Gemini](https://img.shields.io/badge/Gemini-AI-8E75B2?logo=googlegemini)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-06B6D4?logo=tailwindcss)
 
-Karya untuk kompetisi **IT CONVERT 2026 — Software Development**
+Karya untuk kompetisi **IT CONVERT 2026 · Software Development**
 Subtema: *AI for Society and Culture* · Himpunan Mahasiswa Sistem Informasi FMIPA UNEJ
 
 </div>
@@ -41,8 +41,8 @@ mengukuhkan lewat mekanisme upvote. Sebuah chatbot bernama **Tanya Si Lestari**
 membantu pengguna belajar dengan menjawab pertanyaan langsung dari data kamus
 yang terkumpul (Retrieval Augmented Generation).
 
-> Bukan kamus statis satu-arah — melainkan **kamus hidup** yang tumbuh bersama
-> penuturnya.
+> Bukan kamus statis satu arah. Si Lestari adalah **kamus hidup** yang tumbuh
+> bersama penuturnya.
 
 ---
 
@@ -51,55 +51,48 @@ yang terkumpul (Retrieval Augmented Generation).
 | Fitur | Deskripsi |
 |---|---|
 | 🖊️ **Sumbang Kata** | Formulir cepat (≤60 detik): kata, arti, daerah, contoh kalimat opsional, kontributor boleh anonim |
-| 🤖 **Validasi AI Otomatis** | Gemini memeriksa keaslian kosakata, menentukan kategori, dan meng-generate contoh kalimat — berjalan async tanpa memblokir pengguna |
+| 🤖 **Validasi AI Otomatis** | Gemini memeriksa keaslian kosakata, menentukan kategori, dan meng-generate contoh kalimat, berjalan async tanpa memblokir pengguna |
 | 🗺️ **Jelajahi & Cari** | Filter 12 daerah, kategori, status verifikasi; pencarian lintas kolom; 4 mode pengurutan |
 | 📄 **Detail Kata** | Arti lengkap, contoh, catatan AI, kata terkait satu daerah, tombol dukung & bagikan |
 | ❤️ **Verifikasi Komunitas** | Upvote publik yang tersimpan aman lewat endpoint server-side |
 | 💬 **Tanya Si Lestari (RAG)** | Chatbot yang menjawab dari entri kamus asli, lengkap dengan sumber yang bisa diklik |
-| 📊 **Statistik Komunitas** | KPI, sebaran per daerah, status verifikasi, dan papan kontributor — semua real-time dari database |
+| 📊 **Statistik Komunitas** | KPI, sebaran per daerah, status verifikasi, dan papan kontributor, semua real-time dari database |
 
 ---
 
-## 📸 Preview
 
 > Letakkan screenshot di folder `.github/assets/` dengan nama file sesuai di bawah,
 > lalu hapus baris catatan miring ini.
 
 ### Beranda (Landing)
 
-> 📸 `01-landing.png` — halaman utama bagian hero + angka komunitas live
 
-<img src=".github/assets/01-landing.png" width="800" alt="Beranda Si Lestari"/>
+<img src=".github/assets/01-landing.jpeg" width="800" alt="Beranda Si Lestari"/>
 
-### Jelajahi Kamus — filter & pencarian
+### Jelajahi Kamus: filter & pencarian
 
-> 📸 `02-jelajahi.png` — grid kartu dengan filter daerah aktif + badge Terverifikasi AI
 
-<img src=".github/assets/02-jelajahi.png" width="800" alt="Halaman Jelajahi"/>
+<img src=".github/assets/02-jelajahi.jpeg" width="800" alt="Halaman Jelajahi"/>
 
 ### Detail Kata
 
-> 📸 `03-detail.png` — halaman detail kata lengkap dengan analisis AI + tombol Dukung
 
-<img src=".github/assets/03-detail.png" width="800" alt="Detail Kata"/>
+<img src=".github/assets/03-detail.jpeg" width="800" alt="Detail Kata"/>
 
 ### Sumbang Kata + Validasi AI
 
-> 📸 `04-tambah-ai.png` — form kiri, panel Hasil Analisis AI kanan (kategori, catatan, contoh kalimat buatan AI)
 
-<img src=".github/assets/04-tambah-ai.png" width="800" alt="Sumbang Kata dengan Validasi AI"/>
+<img src=".github/assets/04-tambah-ai.jpeg" width="800" alt="Sumbang Kata dengan Validasi AI"/>
 
-### Tanya Si Lestari — Chatbot RAG
+### Tanya Si Lestari: Chatbot RAG
 
-> 📸 `05-tanya.png` — percakapan dengan jawaban berbasis kamus + chip sumber
 
-<img src=".github/assets/05-tanya.png" width="800" alt="Chatbot Tanya Si Lestari"/>
+<img src=".github/assets/05-tanya.jpeg" width="800" alt="Chatbot Tanya Si Lestari"/>
 
 ### Statistik Komunitas
 
-> 📸 `06-statistik.png` — KPI, grafik sebaran per daerah, donut status verifikasi
 
-<img src=".github/assets/06-statistik.png" width="800" alt="Statistik Komunitas"/>
+<img src=".github/assets/06-statistik.jpeg" width="800" alt="Statistik Komunitas"/>
 
 ---
 
@@ -146,7 +139,7 @@ agar API key tidak pernah terekspos ke browser.
 ### 1. Clone & install
 
 ```bash
-git clone https://github.com/[username]/SiLestari.git
+git clone https://github.com/vitoaditya/SiLestari.git
 cd SiLestari/apps/web
 npm install
 ```
@@ -199,7 +192,7 @@ npm run dev
 
 | Endpoint | Method | Fungsi |
 |---|---|---|
-| `/api/entries` | GET | Daftar entri — filter `daerah`, `kategori`, `status`, pencarian `q`, `sort` |
+| `/api/entries` | GET | Daftar entri, filter `daerah`, `kategori`, `status`, pencarian `q`, `sort` |
 | `/api/entries` | POST | Buat entri baru + trigger validasi AI (fire-and-forget) |
 | `/api/entries/[id]` | GET | Detail satu entri |
 | `/api/entries/[id]/upvote` | POST | Tambah dukungan komunitas (via admin token) |
@@ -242,11 +235,11 @@ SiLestari/
 
 ## 🗺️ Status & Rencana Pengembangan
 
-**MVP (selesai):** semua fitur inti di atas berfungsi end-to-end — submit →
-validasi AI → tampil di kamus, chatbot RAG, statistik real-time.
+**MVP (selesai):** semua fitur inti berfungsi end-to-end, dari submit, validasi
+AI, tampil di kamus, chatbot RAG, hingga statistik real-time.
 
 **Rencana berikutnya:**
-- [ ] Autentikasi kontributor (v1.1) — atribusi otomatis & riwayat kontribusi
+- [ ] Autentikasi kontributor (v1.1): atribusi otomatis & riwayat kontribusi
 - [ ] Unggah audio pelafalan + pemutar di detail kata
 - [ ] Panel moderasi untuk entri meragukan
 - [ ] Ekspor open data (CSV/JSON) untuk peneliti
@@ -255,20 +248,10 @@ validasi AI → tampil di kamus, chatbot RAG, statistik real-time.
 
 | Peran | Nama |
 |---|---|
-| Ketua | [Nama Anggota] |
-| Anggota 1 | [Nama Anggota] |
-| Anggota 2 | [Nama Anggota] |
+| Ketua | Vito Aditya |
+| Anggota 1 | Muhammad Rizki Ibrahim |
 
-Dibimbing oleh: [Nama Dosen Pembimbing]
+## 📄 Lisensi
 
----
-
-<div align="center">
-
-**Si Lestari** — dibuat dengan gotong royong untuk IT CONVERT 2026
-
-Himpunan Mahasiswa Sistem Informasi · FMIPA · Universitas Jember
-
-#ITC2026 · #SOFTDEV_ITC2026
-
-</div>
+Karya ini dikembangkan untuk keperluan kompetisi IT CONVERT 2026.
+Hak cipta atas kode dan aset dimiliki oleh tim.
