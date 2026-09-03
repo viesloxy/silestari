@@ -11,13 +11,11 @@ type Cerita = {
 };
 
 /**
- * Foto dari Unsplash (bebas dipakai, lisensi Unsplash).
- * Ganti photo ID jika ingin ganti gambar.
+ * Foto aset lokal (public/daerah) — satu kisah per daerah, sesuai fotonya.
  */
 const cerita: Cerita[] = [
   {
-    gambar:
-      "https://images.unsplash.com/photo-1518709414768-a88981a4515d?w=1200&auto=format&fit=crop&q=80",
+    gambar: "/daerah/yogyakarta.jpeg",
     daerah: "Yogyakarta",
     judul: "Menjaga aksara Jawa lewat kata sehari-hari",
     ringkas:
@@ -25,8 +23,7 @@ const cerita: Cerita[] = [
     href: "#",
   },
   {
-    gambar:
-      "https://images.unsplash.com/photo-1583417319070-4a69db38a482?w=1200&auto=format&fit=crop&q=80",
+    gambar: "/daerah/bali.jpeg",
     daerah: "Bali",
     judul: "Kata pura yang tidak diajarkan di sekolah",
     ringkas:
@@ -34,8 +31,7 @@ const cerita: Cerita[] = [
     href: "#",
   },
   {
-    gambar:
-      "https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=1200&auto=format&fit=crop&q=80",
+    gambar: "/daerah/minangkabau.jpeg",
     daerah: "Minangkabau",
     judul: "Peribahasa dari nagari yang mulai terlupa",
     ringkas:
