@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { createPB, type Entry } from "@/lib/pocketbase";
@@ -9,7 +10,26 @@ type Kata = {
   arti: string;
   contoh: string;
   kontributor: string;
+  gambar: string;
 };
+
+// Foto per daerah (aset lokal) supaya visual kartu sesuai asal katanya.
+const GAMBAR_DAERAH: Record<string, string> = {
+  Jawa: "/daerah/yogyakarta.jpeg",
+  Minang: "/daerah/minangkabau.jpeg",
+  Bali: "/daerah/bali.jpeg",
+};
+
+// Fallback untuk daerah yang belum punya foto lokal (dirotar per kartu).
+const GAMBAR_POOL = [
+  "https://images.unsplash.com/photo-1552083375-1447ce886485?w=1200&auto=format&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1587574293340-e0011c4e8ecf?w=1200&auto=format&fit=crop&q=80",
+  "https://images.unsplash.com/photo-1544967082-d9d25d867d66?w=1200&auto=format&fit=crop&q=80",
+];
+
+function gambarUntuk(daerah: string, index: number): string {
+  return GAMBAR_DAERAH[daerah] ?? GAMBAR_POOL[index % GAMBAR_POOL.length];
+}
 
 // Fallback tampilan kalau backend tidak reachable, supaya landing tetap utuh.
 const FALLBACK: Kata[] = [
@@ -21,6 +41,7 @@ const FALLBACK: Kata[] = [
       "Ungkapan terima kasih yang disampaikan dengan hormat, sering diiringi anggukan halus.",
     contoh: "Matur nuwun sampun rawuh ing griya kula.",
     kontributor: "Aditya P.",
+    gambar: "/daerah/yogyakarta.jpeg",
   },
   {
     daerah: "Minang",
@@ -30,6 +51,7 @@ const FALLBACK: Kata[] = [
       "Alam yang terbentang menjadi guru. Belajar dari kejadian di sekitar, bukan hanya dari buku.",
     contoh: "Kok indak dapek di buku, cubo caliak alam.",
     kontributor: "Rina M.",
+    gambar: "/daerah/minangkabau.jpeg",
   },
   {
     daerah: "Bali",
@@ -39,25 +61,20 @@ const FALLBACK: Kata[] = [
       "Wadah kecil dari daun kelapa berisi bunga dan dupa, untuk persembahyangan harian.",
     contoh: "Ibu meletakkan canang di depan pintu setiap pagi.",
     kontributor: "Wayan S.",
+    gambar: "/daerah/bali.jpeg",
   },
-];
-
-// Pelat warna kartu mengikuti aturan 3-kolom design system: kilau, batik, daun.
-const PLATE = [
-  "bg-sl-kilau-500",
-  "bg-sl-batik-500",
-  "bg-sl-daun-500",
 ];
 
 async function fetchKataPilihan(): Promise<Kata[]> {
   try {
     const pb = createPB();
-    const result = await pb.collection("entries").getList(1, 3, {
+    const result = await pb.collection("entries").getList(1, 12, {
       filter: "ai_validated = true",
       sort: "-upvotes",
     });
     if (result.items.length === 0) return FALLBACK;
-    return (result.items as unknown as Entry[]).map((e) => ({
+    const entries = pilihTigaBedaDaerah(result.items as unknown as Entry[]);
+    return entries.map((e, i) => ({
       daerah: e.daerah,
       kategori: titleCase(e.ai_kategori ?? "lainnya"),
       kata: e.kata,
@@ -66,10 +83,29 @@ async function fetchKataPilihan(): Promise<Kata[]> {
         e.contoh_kalimat ||
         `Contoh pemakaian kata "${e.kata}" dalam percakapan sehari-hari.`,
       kontributor: e.kontributor || "Anonim",
+      gambar: gambarUntuk(e.daerah, i),
     }));
   } catch {
     return FALLBACK;
   }
+}
+
+/** Ambil 3 entri teratas dengan daerah berbeda, supaya kartu bervariasi. */
+function pilihTigaBedaDaerah(entries: Entry[]): Entry[] {
+  const seen = new Set<string>();
+  const unik: Entry[] = [];
+  for (const e of entries) {
+    if (!seen.has(e.daerah)) {
+      seen.add(e.daerah);
+      unik.push(e);
+    }
+    if (unik.length === 3) return unik;
+  }
+  for (const e of entries) {
+    if (unik.length >= 3) break;
+    if (!unik.includes(e)) unik.push(e);
+  }
+  return unik.slice(0, 3);
 }
 
 function titleCase(s: string): string {
@@ -110,13 +146,21 @@ export async function KataPilihan() {
                 opacity: 0,
               }}
             >
-              {/* Pelat kata: visual utama adalah kata itu sendiri */}
-              <div
-                className={`relative flex h-56 w-full items-center justify-center overflow-hidden ${PLATE[i % PLATE.length]}`}
-              >
-                <span className="break-words px-6 text-center text-3xl font-extrabold leading-tight tracking-tight text-white md:text-4xl">
-                  {k.kata}
-                </span>
+              {/* Foto daerah sebagai latar, kata sebagai fokus utama */}
+              <div className="relative h-56 w-full overflow-hidden">
+                <Image
+                  src={k.gambar}
+                  alt={`Suasana ${k.daerah} untuk kata ${k.kata}`}
+                  fill
+                  sizes="(min-width: 768px) 33vw, 100vw"
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/10" />
+                <div className="absolute inset-0 flex items-center justify-center px-6">
+                  <span className="text-center text-3xl font-normal leading-snug text-white drop-shadow-md md:text-4xl">
+                    {k.kata}
+                  </span>
+                </div>
                 <div className="absolute bottom-3 left-3 flex items-center gap-2 text-xs font-medium text-white">
                   <span className="rounded-full bg-white/95 px-3 py-1 text-sl-ink-900">
                     {k.daerah}
@@ -128,9 +172,6 @@ export async function KataPilihan() {
               </div>
 
               <div className="flex flex-1 flex-col p-7">
-                <h3 className="text-2xl font-bold leading-tight tracking-tight text-sl-ink-900 transition-colors duration-300 group-hover:text-sl-kilau-700">
-                  {k.kata}
-                </h3>
                 <p className="mt-3 flex-1 text-sm leading-relaxed text-sl-ink-500">
                   {k.arti}
                 </p>
