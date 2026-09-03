@@ -15,9 +15,10 @@ type Kata = {
 
 // Foto per daerah (aset lokal) supaya visual kartu sesuai asal katanya.
 const GAMBAR_DAERAH: Record<string, string> = {
-  Jawa: "/daerah/yogyakarta.jpeg",
+  Jawa: "/daerah/jawa2.jpeg",
   Minang: "/daerah/minangkabau.jpeg",
   Bali: "/daerah/bali.jpeg",
+  Batak: "/daerah/batak.jpeg",
 };
 
 // Fallback untuk daerah yang belum punya foto lokal (dirotar per kartu).
@@ -41,7 +42,7 @@ const FALLBACK: Kata[] = [
       "Ungkapan terima kasih yang disampaikan dengan hormat, sering diiringi anggukan halus.",
     contoh: "Matur nuwun sampun rawuh ing griya kula.",
     kontributor: "Aditya P.",
-    gambar: "/daerah/yogyakarta.jpeg",
+    gambar: "/daerah/jawa2.jpeg",
   },
   {
     daerah: "Minang",
